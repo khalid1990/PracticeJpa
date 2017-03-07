@@ -1,0 +1,26 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.7
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Play Jpa',
+                'Implementation-Version': version,
+                'Main-Class': 'com.babar.app.MainApp'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+dependencies {
+    compile 'org.hibernate:hibernate-entitymanager:3.6.10.Final'
+    compile 'mysql:mysql-connector-java:5.1.31'
+    compile 'commons-dbcp:commons-dbcp:1.4'
+    compile 'org.slf4j:slf4j-simple:1.7.7'
+}
