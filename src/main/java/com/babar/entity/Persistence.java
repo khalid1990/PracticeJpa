@@ -1,34 +1,48 @@
 package com.babar.entity;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import java.util.Date;
 
 /**
  * @author babar
  * @since 2/23/17.
  */
+@MappedSuperclass
 public class Persistence {
 
     private int status;
 
+    @ManyToOne
+    @JoinColumn(name = "created_by_id")
     private User createdBy;
 
     private Date created;
 
+    @ManyToOne
+    @JoinColumn(name = "updated_by_id")
     private User updatedBy;
 
     private Date updated;
 
+    @ManyToOne
+    @JoinColumn(name = "approved_by_id")
     private User approvedBy;
 
-    private Date approvedDate;
+    private Date approveDate;
 
+    @ManyToOne
+    @JoinColumn(name = "returned_by_id")
     private User returnedBy;
 
-    private Date returned;
+    private Date returnDate;
 
+    @ManyToOne
+    @JoinColumn(name = "deleted_by_id")
     private User deletedBy;
 
-    private Date deleted;
+    private Date deleteDate;
 
     private String returnReason;
 
@@ -82,12 +96,12 @@ public class Persistence {
         this.approvedBy = approvedBy;
     }
 
-    public Date getApprovedDate() {
-        return approvedDate;
+    public Date getApproveDate() {
+        return approveDate;
     }
 
-    public void setApprovedDate(Date approvedDate) {
-        this.approvedDate = approvedDate;
+    public void setApproveDate(Date approveDate) {
+        this.approveDate = approveDate;
     }
 
     public User getReturnedBy() {
@@ -98,12 +112,12 @@ public class Persistence {
         this.returnedBy = returnedBy;
     }
 
-    public Date getReturned() {
-        return returned;
+    public Date getReturnDate() {
+        return returnDate;
     }
 
-    public void setReturned(Date returned) {
-        this.returned = returned;
+    public void setReturnDate(Date returnDate) {
+        this.returnDate = returnDate;
     }
 
     public User getDeletedBy() {
@@ -114,12 +128,12 @@ public class Persistence {
         this.deletedBy = deletedBy;
     }
 
-    public Date getDeleted() {
-        return deleted;
+    public Date getDeleteDate() {
+        return deleteDate;
     }
 
-    public void setDeleted(Date deleted) {
-        this.deleted = deleted;
+    public void setDeleteDate(Date deleteDate) {
+        this.deleteDate = deleteDate;
     }
 
     public String getReturnReason() {

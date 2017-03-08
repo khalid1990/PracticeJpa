@@ -23,6 +23,10 @@ public class QuestionPaper extends Persistence{
 
     private Date examDate;
 
+    @ManyToOne
+    @JoinColumn(name = "institution_id")
+    private Institution institution;
+
     @Enumerated(EnumType.STRING)
     private Language lang;
 
@@ -71,6 +75,14 @@ public class QuestionPaper extends Persistence{
 
     public void setExamDate(Date examDate) {
         this.examDate = examDate;
+    }
+
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
     }
 
     public Language getLang() {
