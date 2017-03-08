@@ -1,4 +1,4 @@
-package com.babar;
+package com.babar.service;
 
 import com.babar.entity.Client;
 

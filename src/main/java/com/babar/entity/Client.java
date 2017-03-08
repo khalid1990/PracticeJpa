@@ -8,7 +8,7 @@ import java.util.Date;
  * @since 2/26/17.
  */
 @Entity
-public class Client {
+public class Client{
 
     @Id
     @GeneratedValue

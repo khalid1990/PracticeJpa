@@ -30,6 +30,10 @@ public class Persistence {
 
     private Date deleted;
 
+    private String returnReason;
+
+    private String deleteReason;
+
     public int getStatus() {
         return status;
     }
@@ -116,5 +120,21 @@ public class Persistence {
 
     public void setDeleted(Date deleted) {
         this.deleted = deleted;
+    }
+
+    public String getReturnReason() {
+        return returnReason;
+    }
+
+    public void setReturnReason(String returnReason) {
+        this.returnReason = returnReason;
+    }
+
+    public String getDeleteReason() {
+        return deleteReason;
+    }
+
+    public void setDeleteReason(String deleteReason) {
+        this.deleteReason = deleteReason;
     }
 }

@@ -1,5 +1,7 @@
 package com.babar.entity;
 
+import com.babar.entity.enums.Designation;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -8,7 +10,7 @@ import java.util.Date;
  * @since 2/23/17.
  */
 @Entity
-public class User {
+public class User{
 
     @Id
     @GeneratedValue

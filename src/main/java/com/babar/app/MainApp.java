@@ -1,6 +1,6 @@
 package com.babar.app;
 
-import com.babar.ClientService;
+import com.babar.service.ClientService;
 
 /**
  * @author babar
@@ -10,7 +10,6 @@ public class MainApp {
 
     public static void main(String[] args) {
         ClientService service = new ClientService();
-        service.init();
         //service.updateClient();
     }
 }
