@@ -1,25 +1,9 @@
-/* creating the CLIENT table */
+-- creating the user table
+CREATE DATABASE IF NOT EXISTS QBank;
 
-CREATE TABLE client (
-  id        INT(10)     NOT NULL AUTO_INCREMENT,
-  first_name VARCHAR(50),
-  last_name VARCHAR(50),
-  email     VARCHAR(50) NOT NULL UNIQUE,
-  password  VARCHAR(50),
-  phone     VARCHAR(30) NOT NULL UNIQUE,
-  entry_date TIMESTAMP,
+use QBank;
 
-  PRIMARY KEY (id)
-);
-
-/* a join table for client to question_paper oneToMany relationship */
-
-CREATE TABLE client_question_paper (
-  client_id         INT(10) NOT NULL,
-  question_paper_id INT(10) NOT NULL UNIQUE
-);
-
-/* creating the user table */
+DROP TABLE IF EXISTS user;
 
 CREATE TABLE user (
   id         INT(10)     NOT NULL AUTO_INCREMENT,
@@ -35,7 +19,25 @@ CREATE TABLE user (
   PRIMARY KEY (id)
 );
 
-/* creating the QuestionPaper table */
+-- creating the client table
+
+DROP TABLE IF EXISTS client;
+
+CREATE TABLE client (
+  id        INT(10)     NOT NULL AUTO_INCREMENT,
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+  email     VARCHAR(50) NOT NULL UNIQUE,
+  password  VARCHAR(50),
+  phone     VARCHAR(30) NOT NULL UNIQUE,
+  entry_date TIMESTAMP,
+
+  PRIMARY KEY (id)
+);
+
+-- creating the QuestionPaper table
+
+DROP TABLE IF EXISTS question_paper;
 
 CREATE TABLE question_paper (
   id                          INT(10)      NOT NULL AUTO_INCREMENT,
@@ -67,52 +69,37 @@ CREATE TABLE question_paper (
   delete_reason               VARCHAR(200),
 
   PRIMARY KEY (id),
-  CONSTRAINT FOREIGN KEY (fk_created_by_id_user_id) references user(id),
-  CONSTRAINT FOREIGN KEY (fk_updated_by_id_user_id) references user(id),
-  CONSTRAINT FOREIGN KEY (fk_approved_by_id_user_id) references user(id),
-  CONSTRAINT FOREIGN KEY (fk_returned_by_id_user_id) references user(id),
-  CONSTRAINT FOREIGN KEY (fk_deleted_by_id_user_id) references user(id)
-
+  CONSTRAINT fk_created_by_id_user_id FOREIGN KEY (created_by_id) references user(id),
+  CONSTRAINT fk_updated_by_id_user_id FOREIGN KEY (updated_by_id) references user(id),
+  CONSTRAINT fk_approved_by_id_user_id FOREIGN KEY (approved_by_id) references user(id),
+  CONSTRAINT fk_returned_by_id_user_id FOREIGN KEY (returned_by_id) references user(id),
+  CONSTRAINT fk_deleted_by_id_user_id FOREIGN KEY (deleted_by_id) references user(id)
 );
 
-/* creating institution table */
+
+-- There is a uni directional ManyToMany relationship between Client and QuestionPaper,
+-- where the Client side is the owner, and QuestionPaper doesn't have any reference to
+-- Client. As it is a ManyToMany relationship we need a separate table for the association
+-- a join table for client to question_paper ManyToMany relationship
+
+DROP TABLE IF EXISTS client_question_paper;
+
+CREATE TABLE client_question_paper (
+  client_id         INT(10) NOT NULL,
+  question_paper_id INT(10) NOT NULL,
+
+  PRIMARY KEY (client_id, question_paper_id),
+  CONSTRAINT fk_client FOREIGN KEY (client_id) REFERENCES client(id) ON DELETE CASCADE ON UPDATE CASCADE ,
+  CONSTRAINT fk_question_paper FOREIGN KEY (question_paper_id) REFERENCES question_paper(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- creating institution table
+
+DROP TABLE IF EXISTS institution;
 
 CREATE TABLE institution (
   id INT(10) NOT NULL AUTO_INCREMENT,
   institutionName VARCHAR(200) NOT NULL UNIQUE,
+
   PRIMARY KEY (id)
 );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

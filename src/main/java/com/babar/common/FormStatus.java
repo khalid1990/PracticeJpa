@@ -1,4 +1,4 @@
-package com.babar.entity;
+package com.babar.common;
 
 /**
  * @author babar

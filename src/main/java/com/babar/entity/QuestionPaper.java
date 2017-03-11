@@ -1,7 +1,7 @@
 package com.babar.entity;
 
-import com.babar.entity.enums.ExamType;
-import com.babar.entity.enums.Language;
+import com.babar.common.enums.ExamType;
+import com.babar.common.enums.Language;
 
 import javax.persistence.*;
 import java.util.Date;

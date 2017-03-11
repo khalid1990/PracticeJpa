@@ -29,24 +29,13 @@ public class Client{
 
     private Date entryDate;
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(
             name = "client_question_paper",
-            joinColumns = {@JoinColumn(name = "client_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "question_paper_id", referencedColumnName = "id")}
+            joinColumns = {@JoinColumn(name = "client_id")},
+            inverseJoinColumns = {@JoinColumn(name = "question_paper_id")}
     )
     private List<QuestionPaper> questionPapers;
-
-    public Client() {
-    }
-
-    public Client(String firstName, String lastName, String email, String password, String phone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-    }
 
     public int getId() {
         return id;
