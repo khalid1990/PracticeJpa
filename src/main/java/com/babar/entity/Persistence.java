@@ -1,8 +1,8 @@
 package com.babar.entity;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
+import com.babar.common.enums.FormStatus;
+
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -12,7 +12,8 @@ import java.util.Date;
 @MappedSuperclass
 public class Persistence {
 
-    private int status;
+    @Enumerated(EnumType.STRING)
+    private FormStatus status;
 
     @ManyToOne
     @JoinColumn(name = "created_by_id")
@@ -48,11 +49,11 @@ public class Persistence {
 
     private String deleteReason;
 
-    public int getStatus() {
+    public FormStatus getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(FormStatus status) {
         this.status = status;
     }
 
