@@ -19,13 +19,6 @@ public class Institution {
     @Column(unique = true)
     private String institutionName;
 
-    public Institution() {
-    }
-
-    public Institution(String institutionName) {
-        this.institutionName = institutionName;
-    }
-
     public int getId() {
         return id;
     }

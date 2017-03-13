@@ -1,6 +1,6 @@
 package com.babar.entity;
 
-import com.babar.entity.enums.Designation;
+import com.babar.common.enums.Designation;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -34,21 +34,6 @@ public class User{
     private String address;
 
     private Date created;
-
-    public User() {
-    }
-
-    public User(String firstName, String lastName, String email, String password, String phone,
-                Designation designation, String address, Date created) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-        this.designation = designation;
-        this.address = address;
-        this.created = created;
-    }
 
     public int getId() {
         return id;

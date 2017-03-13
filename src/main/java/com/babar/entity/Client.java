@@ -2,6 +2,7 @@ package com.babar.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author babar
@@ -28,16 +29,13 @@ public class Client{
 
     private Date entryDate;
 
-    public Client() {
-    }
-
-    public Client(String firstName, String lastName, String email, String password, String phone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "client_question_paper",
+            joinColumns = {@JoinColumn(name = "client_id")},
+            inverseJoinColumns = {@JoinColumn(name = "question_paper_id")}
+    )
+    private List<QuestionPaper> questionPapers;
 
     public int getId() {
         return id;
@@ -93,6 +91,14 @@ public class Client{
 
     public void setEntryDate(Date entryDate) {
         this.entryDate = entryDate;
+    }
+
+    public List<QuestionPaper> getQuestionPapers() {
+        return questionPapers;
+    }
+
+    public void setQuestionPapers(List<QuestionPaper> questionPapers) {
+        this.questionPapers = questionPapers;
     }
 }
 
