@@ -1,6 +1,5 @@
 apply plugin: 'java'
 apply plugin: 'war'
-apply plugin: 'jetty'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -21,14 +20,9 @@ dependencies {
     compile 'org.slf4j:slf4j-simple:1.7.7'
 }
 
-jettyRun{
-    contextPath = "qbank"
-    httpPort = 8080
-}
-
-jettyRunWar{
-    contextPath = "qbank"
-    httpPort = 8080
+task copyWarToAppServer (type : Copy) {
+    from '/home/sherlock/IdeaProjects/PracticeJpa/build/libs/PracticeJpa-1.0.war'
+    into '/home/sherlock/app_server/apache-tomee-plus-7.0.3/webapps/'
 }
 
 /*

@@ -1,0 +1,16 @@
+/* for tagListCheckboxes.tag */
+
+.tagCheckboxWrapper {
+    padding: 3px;
+    display: inline-block;
+    margin: 3px;
+}
+
+input[type=checkbox]:checked+label {
+    color: green;
+}
+
+input[type=checkbox] {
+    margin-right: 3px;
+    padding-top : 3px;
+}
