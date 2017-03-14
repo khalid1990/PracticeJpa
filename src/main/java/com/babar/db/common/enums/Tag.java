@@ -1,7 +1,7 @@
-package com.babar.common.enums;
+package com.babar.db.common.enums;
 
-import static com.babar.common.enums.ExamCategory.*;
-import static com.babar.common.enums.ExamSubCategory.*;
+import static com.babar.db.common.enums.ExamCategory.*;
+import static com.babar.db.common.enums.ExamSubCategory.*;
 
 /**
  * @author babar

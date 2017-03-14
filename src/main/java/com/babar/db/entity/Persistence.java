@@ -1,6 +1,6 @@
-package com.babar.entity;
+package com.babar.db.entity;
 
-import com.babar.common.enums.FormStatus;
+import com.babar.db.common.enums.FormStatus;
 
 import javax.persistence.*;
 import java.util.Date;

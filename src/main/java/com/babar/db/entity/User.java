@@ -1,6 +1,6 @@
-package com.babar.entity;
+package com.babar.db.entity;
 
-import com.babar.common.enums.Designation;
+import com.babar.db.common.enums.Designation;
 
 import javax.persistence.*;
 import java.util.Date;

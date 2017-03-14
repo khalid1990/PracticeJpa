@@ -8,6 +8,7 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd ">
 
-        <context:component-scan base-package="com.babar.entity, com.babar.web.service"/>
+        <context:component-scan base-package="com.babar.db.entity, com.babar.web.question.service"/>
+
 
 </beans>

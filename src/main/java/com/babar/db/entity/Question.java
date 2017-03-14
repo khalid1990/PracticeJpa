@@ -1,6 +1,6 @@
-package com.babar.entity;
+package com.babar.db.entity;
 
-import com.babar.common.enums.ExamSubCategory;
+import com.babar.db.common.enums.ExamSubCategory;
 
 import javax.persistence.*;
 import java.util.List;

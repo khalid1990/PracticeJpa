@@ -1,4 +1,4 @@
-package com.babar.common.enums;
+package com.babar.db.common.enums;
 
 /**
  * @author babar

@@ -1,4 +1,4 @@
-package com.babar.entity;
+package com.babar.db.entity;
 
 import javax.persistence.*;
 import java.util.Date;
