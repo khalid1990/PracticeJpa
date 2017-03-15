@@ -1,3 +1,4 @@
+<%@include file="/WEB-INF/common/taglibs/common-taglibs.jsp"%>
 <%--
   Created by IntelliJ IDEA.
   User: babar
@@ -11,6 +12,6 @@
     <title></title>
 </head>
 <body>
-    <h1>Welcome</h1>
+    <h1><fmt:message key="label.add"/></h1>
 </body>
 </html>

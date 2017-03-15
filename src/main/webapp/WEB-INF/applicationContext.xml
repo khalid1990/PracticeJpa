@@ -10,5 +10,7 @@
 
         <context:component-scan base-package="com.babar.db.entity, com.babar.web.question.service"/>
 
-
+        <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+            <property name="basename" value="ApplicationResources"/>
+        </bean>
 </beans>
