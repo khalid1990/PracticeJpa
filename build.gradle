@@ -20,6 +20,8 @@ dependencies {
     compile 'mysql:mysql-connector-java:5.1.31'
     compile 'commons-dbcp:commons-dbcp:1.4'
     compile 'org.slf4j:slf4j-simple:1.7.7'
+
+    compile 'opensymphony:sitemesh:2.4.2'
 }
 
 task copyWarToAppServer (type : Copy) {

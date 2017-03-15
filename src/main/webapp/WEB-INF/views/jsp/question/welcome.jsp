@@ -9,6 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <meta name="decorator" content="basic-theme"/>
     <title></title>
 </head>
 <body>
