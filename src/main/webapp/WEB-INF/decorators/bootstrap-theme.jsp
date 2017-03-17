@@ -14,6 +14,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
+    <script type="text/javascript" src="<c:url value="/resources/bootstrap-3.3.7-dist/css/bootstrap.css"/>"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/common.js"/>"></script>
+
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/bootstrap-3.3.7-dist/css/bootstrap.css"/>"/>
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/common.css"/>"/>
+
 </head>
 <body>
     <div class="header">
