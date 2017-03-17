@@ -1,7 +1,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
         xmlns:context="http://www.springframework.org/schema/context"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:mvc="http://www.springframework.org/schema/mvc"
         xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -13,4 +12,5 @@
         <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
             <property name="basename" value="ApplicationResources"/>
         </bean>
+
 </beans>
