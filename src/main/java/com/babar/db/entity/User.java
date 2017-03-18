@@ -106,4 +106,8 @@ public class User{
     public void setCreated(Date created) {
         this.created = created;
     }
+
+    public String getDisplayName() {
+        return firstName + " " + lastName;
+    }
 }

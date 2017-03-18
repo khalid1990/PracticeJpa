@@ -13,13 +13,19 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title></title>
+    <title>
+        <decorator:title/>
+    </title>
     <script type="text/javascript" src="<c:url value="/resources/bootstrap-3.3.7-dist/css/bootstrap.css"/>"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/common.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/jquery-3.2.0.min.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/resources/jquery-ui-1.12.1/jquery-ui.min.js"/>"></script>
 
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/bootstrap-3.3.7-dist/css/bootstrap.css"/>"/>
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/common.css"/>"/>
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/jquery-ui-1.12.1/jquery-ui.min.css"/>"/>
 
+    <decorator:head/>
 </head>
 <body>
     <div class="header">
@@ -31,7 +37,7 @@
     </div>
 
     <div class="footer">
-
+        <p> Copyright : babar </p>
     </div>
 </body>
 </html>
