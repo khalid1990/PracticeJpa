@@ -12,6 +12,7 @@
 <%@attribute name="itemValue"%>
 <%@attribute name="readOnly"%>
 <%@attribute name="hide"%>
+<%@attribute name="id"%>
 
 <c:if test="${not hide}">
     <div class="form-group">
@@ -24,7 +25,7 @@
                 <label for="${bindPath}">
                         <fmt:message key="${messageKey}"/>
                 </label>
-                <form:select path="${bindPath}" cssClass="form-control">
+                <form:select path="${bindPath}" cssClass="form-control" id="${id}">
                     <c:choose>
                         <c:when test="${not empty optionsMap}">
                             <form:options items="${optionsMap}"/>

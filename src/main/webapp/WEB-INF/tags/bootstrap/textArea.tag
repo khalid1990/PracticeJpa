@@ -5,8 +5,8 @@
 <%@attribute name="messageKey" required="true"%>
 <%@attribute name="bindPath" required="true"%>
 <%@attribute name="labelSize" type="java.lang.Integer" %>
-<%@attribute name="size"  type="java.lang.Integer"%>
 <%@attribute name="readOnly" type="java.lang.Boolean" %>
+<%@attribute name="id" type="java.lang.String" %>
 
 <div class="form-group">
     <label for="${bindPath}">
@@ -17,7 +17,7 @@
             <form:label path="${bindPath}"/>
         </c:when>
         <c:otherwise>
-            <form:textarea cssClass="form-control" path="${bindPath}"/>
+            <form:textarea cssClass="form-control" path="${bindPath}" id="${id}"/>
         </c:otherwise>
     </c:choose>
 </div>

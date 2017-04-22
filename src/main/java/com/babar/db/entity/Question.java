@@ -31,4 +31,60 @@ public class Question extends Persistence{
     private String hint;
 
     private int serialNumber;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public List<QuestionOption> getQuestionOptions() {
+        return questionOptions;
+    }
+
+    public void setQuestionOptions(List<QuestionOption> questionOptions) {
+        this.questionOptions = questionOptions;
+    }
+
+    public QuestionPaper getQuestionPaper() {
+        return questionPaper;
+    }
+
+    public void setQuestionPaper(QuestionPaper questionPaper) {
+        this.questionPaper = questionPaper;
+    }
+
+    public ExamSubCategory getExamSubCategory() {
+        return examSubCategory;
+    }
+
+    public void setExamSubCategory(ExamSubCategory examSubCategory) {
+        this.examSubCategory = examSubCategory;
+    }
+
+    public String getHint() {
+        return hint;
+    }
+
+    public void setHint(String hint) {
+        this.hint = hint;
+    }
+
+    public int getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(int serialNumber) {
+        this.serialNumber = serialNumber;
+    }
 }

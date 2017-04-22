@@ -7,6 +7,9 @@
 <%@attribute name="labelSize" type="java.lang.Integer" %>
 <%@attribute name="size"  type="java.lang.Integer"%>
 <%@attribute name="readOnly" type="java.lang.Boolean" %>
+<%@attribute name="id" type="java.lang.String" %>
+<%@attribute name="disabled" type="java.lang.Boolean" %>
+
 
 <div class="form-group">
     <label for="${bindPath}">
@@ -17,7 +20,10 @@
             <form:label path="${bindPath}"/>
         </c:when>
         <c:otherwise>
-            <form:input cssClass="form-control" path="${bindPath}"/>
+            <form:input cssClass="form-control"
+                        path="${bindPath}"
+                        id="${id}"
+                        disabled="${disabled}"/>
         </c:otherwise>
     </c:choose>
 </div>

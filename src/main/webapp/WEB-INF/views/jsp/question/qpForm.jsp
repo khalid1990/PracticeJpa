@@ -59,6 +59,7 @@
         <b:selectBox messageKey="qp.exam.category"
                      bindPath="questionPaper.examCategory"
                      itemLabel="name"/>
+
         <b:textField messageKey="qp.total.time"
                      bindPath="questionPaper.totalTimeInSeconds"/>
         
