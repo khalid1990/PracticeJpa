@@ -1,6 +1,9 @@
 package com.babar.web.question.controller;
 
+import com.babar.web.question.helper.QuestionOptionHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -14,13 +17,18 @@ public class QuestionOptionController {
 
     private static final String QO_FORM = "question-option-form";
 
+    @Autowired
+    private QuestionOptionHelper helper;
+
     @RequestMapping("/show")
     public String show() {
         return QO_FORM;
     }
 
     @RequestMapping("/create")
-    public String create() {
+    public String create(ModelMap modelMap) {
+        helper.populateModel(modelMap);
+
         return QO_FORM;
     }
 

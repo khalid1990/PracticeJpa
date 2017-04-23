@@ -26,14 +26,14 @@ public class QuestionController {
     }
 
     @RequestMapping("/show")
-    public String show(ModelMap modelMap){
-        helper.populateModel(modelMap);
-
+    public String show(){
         return QUESTION_FORM;
     }
 
     @RequestMapping("/create")
-    public String create() {
+    public String create(ModelMap modelMap) {
+        helper.populateModel(modelMap);
+
         return QUESTION_FORM;
     }
 
