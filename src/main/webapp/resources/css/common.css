@@ -1,0 +1,60 @@
+/* for tagListCheckboxes.tag */
+
+.tagCheckboxWrapper {
+    padding: 3px;
+    display: inline-block;
+    margin: 3px;
+}
+
+input[type=checkbox]:checked+label {
+    color: green;
+}
+
+input[type=checkbox] {
+    margin-right: 3px;
+    padding-top : 3px;
+}
+
+.header {
+    background-color: #777777;
+    height: 40px;
+    padding: 10px;
+    width: 100%;
+}
+
+.header-title {
+    color: #e38d13;
+    font-size: large;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.footer {
+    background-color: #777777;
+    color: #1b6d85;
+}
+
+.container {
+    width: 800px;
+    margin: 20px auto 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
