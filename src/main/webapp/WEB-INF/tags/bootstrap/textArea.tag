@@ -7,10 +7,14 @@
 <%@attribute name="labelSize" type="java.lang.Integer" %>
 <%@attribute name="readOnly" type="java.lang.Boolean" %>
 <%@attribute name="id" type="java.lang.String" %>
+<%@attribute name="required" type="java.lang.Boolean" %>
 
 <div class="form-group">
     <label for="${bindPath}">
         <fmt:message key="${messageKey}"/>
+        <c:if test="${required}">
+            <span style="color: red">*</span>
+        </c:if>
     </label>
     <c:choose>
         <c:when  test="${readOnly}">
@@ -18,7 +22,7 @@
         </c:when>
         <c:otherwise>
             <form:textarea cssClass="form-control" path="${bindPath}" id="${id}"/>
+            <form:errors path="${bindPath}"/>
         </c:otherwise>
     </c:choose>
 </div>
-

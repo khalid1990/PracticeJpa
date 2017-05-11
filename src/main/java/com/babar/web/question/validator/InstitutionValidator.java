@@ -1,5 +1,7 @@
 package com.babar.web.question.validator;
 
+import com.babar.web.question.model.InstitutionCommand;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -10,11 +12,11 @@ import org.springframework.validation.Validator;
 public class InstitutionValidator implements Validator {
     @Override
     public boolean supports(Class<?> clazz) {
-        return false;
+        return InstitutionCommand.class.isAssignableFrom(clazz);
     }
 
     @Override
     public void validate(Object target, Errors errors) {
-
+        InstitutionCommand command = (InstitutionCommand) target;
     }
 }
