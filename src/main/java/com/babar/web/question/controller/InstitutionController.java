@@ -47,15 +47,16 @@ public class InstitutionController {
         return INST_FORM;
     }
 
-    @ResponseBody
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_save")
-    public String save(@ModelAttribute("command") @Valid InstitutionCommand command, BindingResult bindingResult) {
+    public String save(@ModelAttribute("command") @Valid InstitutionCommand command,
+                       BindingResult bindingResult,
+                       ModelMap modelMap) {
 
         if (bindingResult.hasErrors()) {
-            return "error";
+            return INST_FORM;
         }
 
-        return "done" + command.getInstitution().getInstitutionName();
+        return "";
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_update")
