@@ -38,6 +38,10 @@ public class InstitutionService {
         return institutions;
     }
 
+    public Institution find(int id) {
+        return em.find(Institution.class, id);
+    }
+
     @Transactional
     public Institution save(Institution institution) {
         return doSave(institution, Action.SAVE);
