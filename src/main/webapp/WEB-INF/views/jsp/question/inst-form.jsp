@@ -1,6 +1,5 @@
 <%--
-  Created by IntelliJ IDEA.
-  User: sherlock
+  User: babar
   Date: 4/24/17
   Time: 12:18 AM
   To change this template use File | Settings | File Templates.
@@ -17,7 +16,9 @@
     <b:formHeader titleKey="label.institution" status="NEW"/>
 
     <form:form action="index" method="post" commandName="command">
-        <b:textArea messageKey="label.institution.name" bindPath="institution.institutionName"/>
+        <b:textArea messageKey="label.institution.name"
+                    bindPath="institution.institutionName"
+                    required="true"/>
 
         <b:buttonSection leftSectionSize="3">
             <jsp:attribute name="left">

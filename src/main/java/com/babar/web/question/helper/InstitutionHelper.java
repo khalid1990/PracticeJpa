@@ -1,5 +1,7 @@
 package com.babar.web.question.helper;
 
+import com.babar.db.entity.Institution;
+import com.babar.web.common.ViewMode;
 import com.babar.web.question.model.InstitutionCommand;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
@@ -10,11 +12,21 @@ import org.springframework.ui.ModelMap;
  */
 @Component
 public class InstitutionHelper {
-    public void populateModel(ModelMap modelMap) {
-        modelMap.put("command", createNewInstitutionCommand());
+
+    public Institution createNewInstitution() {
+        return new Institution();
     }
 
-    private InstitutionCommand createNewInstitutionCommand() {
-        return new InstitutionCommand();
+    public void populateModel(ModelMap modelMap,
+                              Institution institution,
+                              ViewMode viewMode) {
+        modelMap.put("command", createNewInstitutionCommand(institution));
+    }
+
+    private InstitutionCommand createNewInstitutionCommand(Institution institution) {
+        InstitutionCommand command = new InstitutionCommand();
+        command.setInstitution(institution);
+
+        return command;
     }
 }

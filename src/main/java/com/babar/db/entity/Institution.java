@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * @author babar
@@ -16,6 +18,7 @@ public class Institution {
     @GeneratedValue
     private int id;
 
+    @Size(min = 1, max = 300)
     @Column(unique = true)
     private String institutionName;
 
@@ -33,6 +36,10 @@ public class Institution {
 
     public void setInstitutionName(String institutionName) {
         this.institutionName = institutionName;
+    }
+
+    public boolean isNew() {
+        return id == 0;
     }
 
     /*
