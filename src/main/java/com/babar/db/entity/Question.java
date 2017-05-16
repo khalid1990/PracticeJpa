@@ -3,6 +3,8 @@ package com.babar.db.entity;
 import com.babar.db.common.enums.ExamSubCategory;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -16,11 +18,14 @@ public class Question extends Persistence{
     @GeneratedValue
     private int id;
 
+    @NotNull
+    @Size(min = 1, max = 500)
     private String title;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
     private List<QuestionOption> questionOptions;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "question_paper_id")
     private QuestionPaper questionPaper;
@@ -86,5 +91,9 @@ public class Question extends Persistence{
 
     public void setSerialNumber(int serialNumber) {
         this.serialNumber = serialNumber;
+    }
+
+    public boolean isNew() {
+        return id == 0;
     }
 }
