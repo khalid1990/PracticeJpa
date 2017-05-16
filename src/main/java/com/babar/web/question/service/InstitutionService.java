@@ -42,6 +42,10 @@ public class InstitutionService {
         return em.find(Institution.class, id);
     }
 
+    /*public List<Institution> findAll () {
+        //return em. TODO
+    }*/
+
     @Transactional
     public Institution save(Institution institution) {
         return doSave(institution, Action.SAVE);

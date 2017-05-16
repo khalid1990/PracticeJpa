@@ -28,7 +28,8 @@
 
     <form:form action="index" method="post" commandName="command">
         <b:textArea messageKey="question.title"
-                    bindPath="question.title"/>
+                    bindPath="question.title"
+                    required="true"/>
 
         <b:selectBox messageKey="question.exam.sub.category"
                      bindPath="question.examSubCategory"

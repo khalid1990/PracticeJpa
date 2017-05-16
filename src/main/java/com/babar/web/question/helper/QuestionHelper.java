@@ -21,10 +21,15 @@ public class QuestionHelper {
 
     public void populateModel(ModelMap modelMap,
                               Question question,
+                              ExamCategory examCategory,
                               ViewMode viewMode) {
 
         modelMap.put("command", createQuestionCommand(question));
-        modelMap.put("subCategories", ExamSubCategory.getSubCategories(ExamCategory.COMPUTER_SCIENCE_AND_ENGINEERING));
+        populateModelWithSubCategories(modelMap, examCategory);
+    }
+
+    public void populateModelWithSubCategories(ModelMap modelMap, ExamCategory examCategory) {
+        modelMap.put("subCategories", ExamSubCategory.getSubCategories(examCategory));
     }
 
     private QuestionCommand createQuestionCommand(Question question) {

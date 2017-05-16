@@ -172,4 +172,8 @@ public class QuestionPaper extends Persistence{
     public void setInstruction(String instruction) {
         this.instruction = instruction;
     }
+
+    public boolean isNew() {
+        return id == 0;
+    }
 }

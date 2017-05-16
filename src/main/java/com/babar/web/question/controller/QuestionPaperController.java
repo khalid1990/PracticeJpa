@@ -1,13 +1,22 @@
 package com.babar.web.question.controller;
 
 import com.babar.db.entity.QuestionPaper;
+import com.babar.web.common.Forwards;
 import com.babar.web.question.helper.QuestionPaperHelper;
+import com.babar.web.question.model.QuestionPaperCommand;
+import com.babar.web.question.service.QuestionPaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.support.AbstractMultipartHttpServletRequest;
+
+import javax.validation.Valid;
 
 import static com.babar.web.common.ViewMode.*;
 import static com.babar.web.common.Action.*;
@@ -27,52 +36,93 @@ public class QuestionPaperController {
     @Autowired
     private QuestionPaperHelper helper;
 
-    @RequestMapping("/show")
-    public String show() {
-        return QP_FORM;
-    }
+    @Autowired
+    private QuestionPaperService questionPaperService;
 
-    @RequestMapping("/create")
-    public String create(Model model) {
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public String create(ModelMap modelMap) {
         QuestionPaper questionPaper = helper.createQuestionPaper();
 
         helper.checkAccess(questionPaper, SAVE);
 
-        helper.populateModel(questionPaper, model, EDITABLE, SAVE);
+        helper.populateModel(questionPaper, modelMap, EDITABLE, SAVE);
 
         return QP_FORM;
     }
 
-    @RequestMapping("/edit")
-    public String edit() {
+    @RequestMapping(value = "/show", method = RequestMethod.GET)
+    public String show(@RequestParam("id") int id,
+                       ModelMap modelMap) {
+
+        QuestionPaper questionPaper = questionPaperService.find(id);
+
+        helper.checkAccess(questionPaper, SUBMIT);
+        helper.populateModel(questionPaper, modelMap, READ_ONLY, SUBMIT);
+
         return QP_FORM;
     }
 
-    @RequestMapping(name = "index", method = RequestMethod.POST, params = "_action_save")
-    public String save() {
-        return "done";
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    public String edit(@RequestParam("id") int id,
+                       ModelMap modelMap) {
+
+        QuestionPaper questionPaper = questionPaperService.find(id);
+
+        helper.checkAccess(questionPaper, UPDATE);
+        helper.populateModel(questionPaper, modelMap, EDITABLE, UPDATE);
+
+        return QP_FORM;
     }
 
-    @RequestMapping(name = "index", method = RequestMethod.POST, params = "_action_update")
-    public String update() {
-        return "done";
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_save")
+    public String save(@ModelAttribute(COMMAND_NAME) @Valid QuestionPaperCommand command,
+                       BindingResult bindingResult,
+                       ModelMap modelMap) {
+
+        if (bindingResult.hasErrors()) {
+            helper.populateModelWithInstitutions(modelMap);
+            return QP_FORM;
+        }
+
+        return "redirect:" + Forwards.COMMON_DONE;
     }
 
-    @RequestMapping(name = "index", method = RequestMethod.POST, params = "_action_submit")
-    public String submit() {
-        return "done";
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_update")
+    public String update(@ModelAttribute(COMMAND_NAME) @Valid QuestionPaperCommand command,
+                         BindingResult bindingResult,
+                         ModelMap modelMap) {
+
+        if (bindingResult.hasErrors()) {
+            helper.populateModelWithInstitutions(modelMap);
+            return QP_FORM;
+        }
+
+        return "redirect:" + Forwards.COMMON_DONE;
     }
 
-    @RequestMapping(name = "index", method = RequestMethod.POST, params = "_action_approve")
-    public String approve() {
-        return "done";
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_submit")
+    public String submit(@ModelAttribute(COMMAND_NAME) QuestionPaperCommand command) {
+        return "redirect:" + Forwards.COMMON_DONE;
     }
-    @RequestMapping(name = "index", method = RequestMethod.POST, params = "_action_delete")
+
+
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_approve")
+    public String approve(@ModelAttribute(COMMAND_NAME) @Valid QuestionPaperCommand  command,
+                          BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return QP_FORM;
+        }
+
+        return "redirect:" + Forwards.COMMON_DONE;
+    }
+
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_delete")
     public String delete() {
-        return "done";
+        return "redirect:" + Forwards.COMMON_DONE;
     }
-    @RequestMapping(name = "index", method = RequestMethod.POST, params = "_action_return")
+
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_return")
     public String returnToSubmitter() {
-        return "done";
+        return "redirect:" + Forwards.COMMON_DONE;
     }
 }

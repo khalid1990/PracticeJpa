@@ -1,10 +1,12 @@
 package com.babar.web.question.controller;
 
 import com.babar.db.entity.Question;
+import com.babar.db.entity.QuestionPaper;
 import com.babar.web.common.Forwards;
 import com.babar.web.common.ViewMode;
 import com.babar.web.question.helper.QuestionHelper;
 import com.babar.web.question.model.QuestionCommand;
+import com.babar.web.question.service.QuestionPaperService;
 import com.babar.web.question.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,11 +37,16 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String create(ModelMap modelMap) {
+    @Autowired
+    private QuestionPaperService questionPaperService;
 
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public String create(@RequestParam("qpId") int qpId, ModelMap modelMap) {
+
+        QuestionPaper questionPaper = questionPaperService.find(qpId);
         Question question = helper.createNewQuestion();
-        helper.populateModel(modelMap, question, ViewMode.EDITABLE);
+
+        helper.populateModel(modelMap, question, questionPaper.getExamCategory(), ViewMode.EDITABLE);
 
         return QUESTION_FORM;
     }
@@ -49,7 +56,9 @@ public class QuestionController {
                        ModelMap modelMap){
 
         Question question = questionService.find(id);
-        helper.populateModel(modelMap, question, ViewMode.READ_ONLY);
+        QuestionPaper questionPaper = question.getQuestionPaper();
+
+        helper.populateModel(modelMap, question, questionPaper.getExamCategory(), ViewMode.READ_ONLY);
 
         return QUESTION_FORM;
     }
@@ -59,7 +68,9 @@ public class QuestionController {
                        ModelMap modelMap) {
 
         Question question = questionService.find(id);
-        helper.populateModel(modelMap, question, ViewMode.EDITABLE);
+        QuestionPaper questionPaper = question.getQuestionPaper();
+
+        helper.populateModel(modelMap, question, questionPaper.getExamCategory(), ViewMode.EDITABLE);
 
         return QUESTION_FORM;
     }

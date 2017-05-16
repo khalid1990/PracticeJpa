@@ -21,6 +21,4 @@
 
         <tx:annotation-driven/>
         <tx:jta-transaction-manager/>
-
-
 </beans>

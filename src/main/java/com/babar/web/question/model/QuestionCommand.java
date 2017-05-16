@@ -2,12 +2,15 @@ package com.babar.web.question.model;
 
 import com.babar.db.entity.Question;
 
+import javax.validation.Valid;
+
 /**
  * @author babar
  * @since 3/15/17.
  */
 public class QuestionCommand {
 
+    @Valid
     private Question question;
 
     private boolean autoAssignSequenceNo;

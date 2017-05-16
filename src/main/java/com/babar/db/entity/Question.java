@@ -18,7 +18,6 @@ public class Question extends Persistence{
     @GeneratedValue
     private int id;
 
-    @NotNull
     @Size(min = 1, max = 500)
     private String title;
 
