@@ -49,7 +49,7 @@ public class QuestionPaperHelper {
     }
 
     public void populateModelWithInstitutions(ModelMap modelMap) {
-        modelMap.addAttribute("institutions", institutionService.getAll());
+        modelMap.addAttribute("institutions", institutionService.findAll());
     }
 
     private QuestionPaperCommand createNewCommand(QuestionPaper questionPaper, ViewMode viewMode, Action action) {

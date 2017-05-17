@@ -21,30 +21,13 @@ public class InstitutionService {
     @PersistenceContext
     private EntityManager em;
 
-    public List<Institution> getAll() {
-        List<Institution> institutions = new ArrayList<>();
-
-        Institution institution1 = new Institution();
-        institution1.setInstitutionName("BPSC");
-        institution1.setId(0);
-
-        Institution institution2 = new Institution();
-        institution2.setInstitutionName("TechNet");
-        institution2.setId(1);
-
-        institutions.add(institution1);
-        institutions.add(institution2);
-
-        return institutions;
-    }
-
     public Institution find(int id) {
         return em.find(Institution.class, id);
     }
 
-    /*public List<Institution> findAll () {
-        //return em. TODO
-    }*/
+    public List<Institution> findAll () {
+        return em.createNamedQuery("findAllInstitution", Institution.class).getResultList();
+    }
 
     @Transactional
     public Institution save(Institution institution) {

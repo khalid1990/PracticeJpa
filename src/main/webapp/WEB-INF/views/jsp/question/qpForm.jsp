@@ -34,10 +34,12 @@
     <form:form action="index" method="post" commandName="command">
 
         <b:textField messageKey="qp.exam.title"
-                     bindPath="questionPaper.examTitle"/>
+                     bindPath="questionPaper.examTitle"
+                     required="true"/>
 
         <b:textField messageKey="qp.exam.serial"
-                     bindPath="questionPaper.examSerial"/>
+                     bindPath="questionPaper.examSerial"
+                     required="true"/>
 
         <b:inputDateTime messageKey="qp.exam.date"
                          bindPath="questionPaper.examDate"/>
@@ -50,15 +52,18 @@
         
         <b:selectBox messageKey="qp.language"
                      bindPath="questionPaper.lang"
-                     itemLabel="name"/>
+                     itemLabel="name"
+                     required="true"/>
         
         <b:selectBox messageKey="qp.exam.type"
                      bindPath="questionPaper.examType"
-                     itemLabel="name"/>
+                     itemLabel="name"
+                     required="true"/>
 
         <b:selectBox messageKey="qp.exam.category"
                      bindPath="questionPaper.examCategory"
-                     itemLabel="name"/>
+                     itemLabel="name"
+                     required="true"/>
 
         <b:textField messageKey="qp.total.time"
                      bindPath="questionPaper.totalTimeInSeconds"/>
