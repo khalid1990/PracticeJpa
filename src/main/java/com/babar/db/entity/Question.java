@@ -18,7 +18,8 @@ public class Question extends Persistence{
     @GeneratedValue
     private int id;
 
-    @Size(min = 1, max = 500)
+    @NotNull
+    @Size(max = 500)
     private String title;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
@@ -29,6 +30,7 @@ public class Question extends Persistence{
     @JoinColumn(name = "question_paper_id")
     private QuestionPaper questionPaper;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private ExamSubCategory examSubCategory;
 

@@ -26,7 +26,7 @@ public class InstitutionService {
     }
 
     public List<Institution> findAll () {
-        return em.createNamedQuery("findAllInstitution", Institution.class).getResultList();
+        return em.createNamedQuery("findAllInstitutions", Institution.class).getResultList();
     }
 
     @Transactional

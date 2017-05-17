@@ -9,14 +9,15 @@ import javax.validation.constraints.Size;
  * @since 3/8/17.
  */
 @Entity
-@NamedQuery(name = "findAllInstitution", query = "SELECT inst from Institution inst")
+@NamedQuery(name = "findAllInstitutions", query = "SELECT inst from Institution inst")
 public class Institution {
 
     @Id
     @GeneratedValue
     private int id;
 
-    @Size(min = 1, max = 300)
+    @NotNull
+    @Size(max = 200)
     @Column(unique = true)
     private String institutionName;
 

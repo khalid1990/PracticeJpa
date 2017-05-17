@@ -3,6 +3,7 @@ package com.babar.web.question.helper;
 import com.babar.db.common.enums.ExamCategory;
 import com.babar.db.common.enums.ExamSubCategory;
 import com.babar.db.entity.Question;
+import com.babar.web.common.Action;
 import com.babar.web.common.ViewMode;
 import com.babar.web.question.model.QuestionCommand;
 import org.springframework.stereotype.Component;
@@ -19,10 +20,15 @@ public class QuestionHelper {
         return new Question();
     }
 
+    public void checkAccess(Question question, Action action) {
+
+    }
+
     public void populateModel(ModelMap modelMap,
                               Question question,
                               ExamCategory examCategory,
-                              ViewMode viewMode) {
+                              ViewMode viewMode,
+                              Action action) {
 
         modelMap.put("command", createQuestionCommand(question));
         populateModelWithSubCategories(modelMap, examCategory);

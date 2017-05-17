@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author babar
@@ -20,15 +21,15 @@ public class QuestionOptionController {
     @Autowired
     private QuestionOptionHelper helper;
 
-    @RequestMapping("/show")
-    public String show() {
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public String create(@RequestParam("qId") int qId, ModelMap modelMap) {
+        helper.populateModel(modelMap);
+
         return QO_FORM;
     }
 
-    @RequestMapping("/create")
-    public String create(ModelMap modelMap) {
-        helper.populateModel(modelMap);
-
+    @RequestMapping(value = "/show", method = RequestMethod.GET)
+    public String show() {
         return QO_FORM;
     }
 
