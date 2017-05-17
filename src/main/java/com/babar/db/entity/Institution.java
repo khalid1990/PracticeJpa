@@ -1,9 +1,6 @@
 package com.babar.db.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -12,13 +9,15 @@ import javax.validation.constraints.Size;
  * @since 3/8/17.
  */
 @Entity
+@NamedQuery(name = "findAllInstitutions", query = "SELECT inst from Institution inst")
 public class Institution {
 
     @Id
     @GeneratedValue
     private int id;
 
-    @Size(min = 1, max = 300)
+    @NotNull
+    @Size(max = 200)
     @Column(unique = true)
     private String institutionName;
 

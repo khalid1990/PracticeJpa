@@ -5,6 +5,8 @@ import com.babar.db.common.enums.ExamType;
 import com.babar.db.common.enums.Language;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +21,8 @@ public class QuestionPaper extends Persistence{
     @GeneratedValue
     private int id;
 
+    @NotNull
+    @Size(max = 200)
     private String examTitle;
 
     private int examSerial;
@@ -29,12 +33,15 @@ public class QuestionPaper extends Persistence{
     @JoinColumn(name = "institution_id")
     private Institution institution;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Language lang;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private ExamType examType;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private ExamCategory examCategory;
 
@@ -171,5 +178,9 @@ public class QuestionPaper extends Persistence{
 
     public void setInstruction(String instruction) {
         this.instruction = instruction;
+    }
+
+    public boolean isNew() {
+        return id == 0;
     }
 }

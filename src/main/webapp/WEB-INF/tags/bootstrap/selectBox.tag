@@ -5,14 +5,15 @@
 
 <%@attribute name="messageKey" required="true" %>
 <%@attribute name="bindPath" required="true" %>
-<%@attribute name="labelSize"%>
+<%@attribute name="labelSize" type="java.lang.Integer" %>
 <%@attribute name="optionsMap" type="java.util.Map<java.lang.Integer, java.lang.String>"%>
 <%@attribute name="optionsList" type="java.util.List"%>
-<%@attribute name="itemLabel"%>
-<%@attribute name="itemValue"%>
-<%@attribute name="readOnly"%>
-<%@attribute name="hide"%>
-<%@attribute name="id"%>
+<%@attribute name="itemLabel" type="java.lang.String" %>
+<%@attribute name="itemValue" type="java.lang.String" %>
+<%@attribute name="readOnly" type="java.lang.Boolean" %>
+<%@attribute name="hide" type="java.lang.Boolean" %>
+<%@attribute name="id" type="java.lang.String" %>
+<%@attribute name="required" type="java.lang.Boolean" %>
 
 <c:if test="${not hide}">
     <div class="form-group">
@@ -23,7 +24,10 @@
             </c:when>
             <c:otherwise>
                 <label for="${bindPath}">
-                        <fmt:message key="${messageKey}"/>
+                    <fmt:message key="${messageKey}"/>
+                    <c:if test="${required}">
+                        <span style="color: red">*</span>
+                    </c:if>
                 </label>
                 <form:select path="${bindPath}" cssClass="form-control" id="${id}">
                     <c:choose>
@@ -55,6 +59,7 @@
                         </c:otherwise>
                     </c:choose>
                 </form:select>
+                <form:errors path="${bindPath}"/>
             </c:otherwise>
         </c:choose>
     </div>

@@ -13,6 +13,7 @@ import com.babar.web.question.service.InstitutionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
@@ -39,14 +40,16 @@ public class QuestionPaperHelper {
     }
 
     public void populateModel(QuestionPaper questionPaper,
-                              Model model,
+                              ModelMap modelMap,
                               ViewMode viewMode,
                               Action action) {
-        populateDemoQp(questionPaper);
 
-        model.addAttribute(QuestionPaperController.COMMAND_NAME, createNewCommand(questionPaper, viewMode, action));
+        modelMap.addAttribute(QuestionPaperController.COMMAND_NAME, createNewCommand(questionPaper, viewMode, action));
+        populateModelWithInstitutions(modelMap);
+    }
 
-        model.addAttribute("institutions", institutionService.getAll());
+    public void populateModelWithInstitutions(ModelMap modelMap) {
+        modelMap.addAttribute("institutions", institutionService.findAll());
     }
 
     private QuestionPaperCommand createNewCommand(QuestionPaper questionPaper, ViewMode viewMode, Action action) {
@@ -55,14 +58,5 @@ public class QuestionPaperHelper {
 
     private String getBackLink() {
         return "";
-    }
-
-    private void populateDemoQp(QuestionPaper qp) {
-        User user = new User();
-        user.setFirstName("Khalid");
-        user.setLastName("Akbar");
-
-        qp.setCreatedBy(user);
-        qp.setCreated(new Date());
     }
 }

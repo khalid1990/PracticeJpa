@@ -1,6 +1,7 @@
 package com.babar.web.question.helper;
 
 import com.babar.db.entity.Institution;
+import com.babar.web.common.Action;
 import com.babar.web.common.ViewMode;
 import com.babar.web.question.model.InstitutionCommand;
 import org.springframework.stereotype.Component;
@@ -17,9 +18,14 @@ public class InstitutionHelper {
         return new Institution();
     }
 
+    public void checkAccess(Institution institution, Action action) {
+
+    }
+
     public void populateModel(ModelMap modelMap,
                               Institution institution,
-                              ViewMode viewMode) {
+                              ViewMode viewMode,
+                              Action action) {
         modelMap.put("command", createNewInstitutionCommand(institution));
     }
 
