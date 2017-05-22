@@ -64,7 +64,12 @@ public class Institution extends Persistence {
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + institutionName.hashCode();
+        result = 31 * result + (institutionName != null ? institutionName.hashCode() : 0);
+        /*NOTE: the null reference checking of institutionName is important here, otherwise when hibernate validator
+        * is working it calls the hashCode() method and a direct "institutionName.hashCode()" throws NullPointerException
+        * if you submit the form without entering the institutionName.
+        * */
+
         return result;
     }
 }

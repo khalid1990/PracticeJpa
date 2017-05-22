@@ -37,6 +37,12 @@ public class InstitutionController {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
+        /*
+        * If you don't register a StringTrimmerEditor here then all your empty textField will bind empty String to your
+        * command object's properties and the @NotNull validation will fail as an empty string isn't a null value.
+        * The value "true" passed here as the constructor argument for the StringTrimmerEditor" tells spring to
+        * bind empty text inputs as null for a property
+        * */
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 

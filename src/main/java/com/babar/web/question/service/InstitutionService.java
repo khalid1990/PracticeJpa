@@ -64,7 +64,8 @@ public class InstitutionService {
 
     private Institution doSave(Institution institution, Action action) {
 
-        FormStatus nextStatus = WorkflowManager.getNextStatus(FormType.FT_INSTITUTION, institution.getStatus(), action);
+        FormStatus currentStatus = institution.isNew() ? FormStatus.NEW : institution.getStatus();
+        FormStatus nextStatus = WorkflowManager.getNextStatus(FormType.FT_INSTITUTION, currentStatus, action);
         institution.setStatus(nextStatus);
 
         if (institution.isNew()) {

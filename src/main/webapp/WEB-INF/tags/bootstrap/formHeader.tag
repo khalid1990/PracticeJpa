@@ -20,7 +20,11 @@
         <h3 class="panel-title">
             <fmt:message key="${titleKey}"/>
         </h3>
-        <span>${status}</span>
+        <span>
+            <c:if test="${not empty status}">
+                ${status}
+            </c:if>
+        </span>
     </div>
 
     <div class="panel-body">

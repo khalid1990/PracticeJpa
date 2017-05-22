@@ -1,5 +1,7 @@
 package com.babar.web.common;
 
+import java.util.List;
+
 /**
  * @author babar
  * @since 3/17/17.
@@ -20,12 +22,12 @@ public class ActionView {
 
     private ViewMode viewMode;
 
-    public ActionView(ViewMode viewMode, Action... actions) {
+    public ActionView(ViewMode viewMode, List<Action> actions) {
         this.viewMode = viewMode;
         populateBooleanFields(actions);
     }
 
-    private void populateBooleanFields(Action... actions) {
+    private void populateBooleanFields(List<Action> actions) {
 
         for (Action action : actions) {
             switch (action) {

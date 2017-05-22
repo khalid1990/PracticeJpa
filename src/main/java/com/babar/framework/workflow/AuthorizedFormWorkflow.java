@@ -20,6 +20,7 @@ public class AuthorizedFormWorkflow {
 
     public AuthorizedFormWorkflow(FormWorkflow formWorkflow, RoleAction... roleActions) {
         this.formWorkflow = formWorkflow;
+        this.items = new ArrayList<>();
 
         for (RoleAction roleAction : roleActions) {
             items.addAll(roleAction.getItems());
