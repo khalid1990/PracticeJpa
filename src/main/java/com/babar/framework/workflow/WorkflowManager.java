@@ -18,6 +18,7 @@ import static com.babar.framework.workflow.FormType.FT_QUESTION_PAPER;
  * @since 3/25/17.
  */
 public class WorkflowManager {
+
     private static Map<FormType, AuthorizedFormWorkflow> wfEngine = new HashMap<>();
 
     static {

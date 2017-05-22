@@ -60,8 +60,9 @@ public class InstitutionController {
         return INST_FORM;
     }
 
-    @RequestMapping("/edit")
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(@RequestParam("id") int id, ModelMap modelMap) {
+
         Institution institution = institutionService.find(id);
         helper.checkAccess(institution, UPDATE);
         helper.populateModel(modelMap, institution, ViewMode.EDITABLE, UPDATE);
@@ -79,6 +80,7 @@ public class InstitutionController {
         if (bindingResult.hasErrors()) {
             return INST_FORM;
         }
+        institutionService.save(institution);
 
         return "redirect:" + Forwards.COMMON_DONE;
     }

@@ -1,6 +1,9 @@
 package com.babar.web.question.service;
 
+import com.babar.db.common.enums.FormStatus;
 import com.babar.db.entity.Institution;
+import com.babar.framework.workflow.FormType;
+import com.babar.framework.workflow.WorkflowManager;
 import com.babar.web.common.Action;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -60,6 +63,9 @@ public class InstitutionService {
     }
 
     private Institution doSave(Institution institution, Action action) {
+
+        FormStatus nextStatus = WorkflowManager.getNextStatus(FormType.FT_INSTITUTION, institution.getStatus(), action);
+        institution.setStatus(nextStatus);
 
         if (institution.isNew()) {
             em.persist(institution);

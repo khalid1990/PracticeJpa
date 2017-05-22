@@ -26,6 +26,7 @@ public class InstitutionHelper {
                               Institution institution,
                               ViewMode viewMode,
                               Action action) {
+
         modelMap.put("command", createNewInstitutionCommand(institution));
     }
 

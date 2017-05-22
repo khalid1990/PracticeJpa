@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @NamedQuery(name = "findAllInstitutions", query = "SELECT inst from Institution inst")
-public class Institution {
+public class Institution extends Persistence {
 
     @Id
     @GeneratedValue
