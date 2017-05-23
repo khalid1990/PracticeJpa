@@ -11,7 +11,6 @@
 <%@attribute name="disabled" type="java.lang.Boolean" %>
 <%@attribute name="required" type="java.lang.Boolean" %>
 
-
 <div class="form-group">
     <label for="${bindPath}">
         <fmt:message key="${messageKey}"/>

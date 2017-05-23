@@ -20,8 +20,11 @@ public class ActionView {
 
     private ViewMode viewMode;
 
+    private boolean readOnly;
+
     public ActionView(ViewMode viewMode, Action... actions) {
         this.viewMode = viewMode;
+        readOnly = viewMode == ViewMode.READ_ONLY;
         populateBooleanFields(actions);
     }
 
@@ -111,5 +114,13 @@ public class ActionView {
 
     public void setViewMode(ViewMode viewMode) {
         this.viewMode = viewMode;
+    }
+
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
     }
 }
