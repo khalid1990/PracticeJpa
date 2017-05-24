@@ -49,9 +49,9 @@ public class WorkflowManager {
 
     private static List<Action> getAllowedActions(FormType formType, FormStatus currentStatus, List<Role> roles) {
 
-        if (Util.isAnyNull(formType, currentStatus) || CollectionUtils.isEmpty(roles)) {
+        /*if (Util.isAnyNull(formType, currentStatus) || CollectionUtils.isEmpty(roles)) {
             throw new UnsupportedOperationException("This operation is not supported");
-        }
+        }*/
 
         return wfEngine.get(formType).getAllowedActions(currentStatus, roles);
     }

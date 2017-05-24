@@ -41,6 +41,18 @@
         <b:textArea messageKey="label.address"
                     bindPath="user.address"
                     required="true"/>
+        
+        <b:buttonSection leftSectionSize="4">
+            <jsp:attribute name="left">
+                <b:button name="_action_back" value="label.back"/>
+
+                <b:button name="_action_cancel" value="label.cancel"/>
+            </jsp:attribute>
+            
+            <jsp:attribute name="right">
+                <b:button name="_action_save" value="label.save"/>
+            </jsp:attribute>
+        </b:buttonSection>
     </form:form>
 </body>
 </html>

@@ -11,7 +11,20 @@
         http://www.springframework.org/schema/context/spring-context.xsd ">
 
     <context:component-scan base-package="com.babar.web.question.controller,
-                                        com.babar.web.question.helper, com.babar.web.user"/>
+                                        com.babar.web.question.helper, com.babar.web.user.controller, com.babar.web.user.helper"/>
+
+    <!--
+        why am I using com.babar.web.user.controller and com.babar.web.user.helper separately rather than combining them into
+        a simple base package com.babar.web.user; because there is another package named "service" under com.babar.web.user
+        which will also be scanned under the commmon base package; and this servlet (question-servlet) doesn't add transactional
+        features to @Repository annotated classes and @Transactional annotated methods. So if "service" package was also
+        annotated with common base package declaration the entityManagers declared inside the service classes under the service package
+        will not get any transaction present at the time of persisting or merging.
+
+        If I use <tx:annotation-driven> declaration here then it solves the problem, that means I can use the common base package
+        com.babar.web.user, the presence of the aforementioned tag will enable the @Repository and @Transactional and so
+        Persistence context will find a Transaction
+    -->
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>

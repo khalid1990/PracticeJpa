@@ -83,6 +83,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return USER_FORM;
         }
+        userService.save(user);
 
         return "redirect:" + Forwards.COMMON_DONE;
     }
