@@ -13,7 +13,8 @@
     <meta name="decorator" content="bootstrap-theme"/>
 </head>
 <body>
-    <b:formHeader titleKey="label.institution" status="NEW"/>
+    <b:formHeader titleKey="label.institution"
+                  status="${command.institution.status.value}"/>
 
     <form:form action="index" method="post" commandName="command">
         <b:textArea messageKey="label.institution.name"

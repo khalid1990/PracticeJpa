@@ -38,7 +38,27 @@ CREATE TABLE institution (
   id                INT(10) NOT NULL AUTO_INCREMENT,
   institution_name  VARCHAR(200) NOT NULL UNIQUE,
 
-  CONSTRAINT pk_institution PRIMARY KEY (id)
+  status                      VARCHAR (50)       NOT NULL,
+  created_by_id  INT(10),
+  created                     TIMESTAMP,
+  updated_by_id  INT(10),
+  updated                     TIMESTAMP,
+  approved_by_id INT(10),
+  approve_date                TIMESTAMP,
+  returned_by_id INT(10),
+  return_date                 TIMESTAMP,
+  deleted_by_id  INT(10),
+  delete_date                 TIMESTAMP,
+  return_reason               VARCHAR(200),
+  delete_reason               VARCHAR(200),
+
+  CONSTRAINT pk_institution PRIMARY KEY (id),
+
+  CONSTRAINT fk_inst_created_by_id FOREIGN KEY (created_by_id) references user(id),
+  CONSTRAINT fk_inst_updated_by_id FOREIGN KEY (updated_by_id) references user(id),
+  CONSTRAINT fk_inst_approved_by_id FOREIGN KEY (approved_by_id) references user(id),
+  CONSTRAINT fk_inst_returned_by_id FOREIGN KEY (returned_by_id) references user(id),
+  CONSTRAINT fk_inst_deleted_by_id FOREIGN KEY (deleted_by_id) references user(id)
 );
 
 -- creating the client table
@@ -91,11 +111,11 @@ CREATE TABLE question_paper (
 
   CONSTRAINT fk_institution_id FOREIGN KEY (institution_id) references institution (id),
 
-  CONSTRAINT fk_created_by_id_user_id FOREIGN KEY (created_by_id) references user(id),
-  CONSTRAINT fk_updated_by_id_user_id FOREIGN KEY (updated_by_id) references user(id),
-  CONSTRAINT fk_approved_by_id_user_id FOREIGN KEY (approved_by_id) references user(id),
-  CONSTRAINT fk_returned_by_id_user_id FOREIGN KEY (returned_by_id) references user(id),
-  CONSTRAINT fk_deleted_by_id_user_id FOREIGN KEY (deleted_by_id) references user(id)
+  CONSTRAINT fk_qp_created_by_id FOREIGN KEY (created_by_id) references user(id),
+  CONSTRAINT fk_qp_updated_by_id FOREIGN KEY (updated_by_id) references user(id),
+  CONSTRAINT fk_qp_approved_by_id FOREIGN KEY (approved_by_id) references user(id),
+  CONSTRAINT fk_qp_returned_by_id FOREIGN KEY (returned_by_id) references user(id),
+  CONSTRAINT fk_qp_deleted_by_id FOREIGN KEY (deleted_by_id) references user(id)
 );
 
 -- There is a uni directional ManyToMany relationship between Client and QuestionPaper,
@@ -141,11 +161,11 @@ CREATE TABLE question (
 
   CONSTRAINT fk_question_paper_id FOREIGN KEY (question_paper_id) REFERENCES question_paper(id),
 
-  CONSTRAINT fk_created_by_id FOREIGN KEY (created_by_id) REFERENCES user(id),
-  CONSTRAINT fk_updated_by_id FOREIGN KEY (updated_by_id) REFERENCES user(id),
-  CONSTRAINT fk_approved_by_id FOREIGN KEY (approved_by_id) REFERENCES user(id),
-  CONSTRAINT fk_returned_by_id FOREIGN KEY (returned_by_id) REFERENCES user(id),
-  CONSTRAINT fk_deleted_by_id FOREIGN KEY (deleted_by_id) REFERENCES user(id)
+  CONSTRAINT fk_ques_created_by_id FOREIGN KEY (created_by_id) REFERENCES user(id),
+  CONSTRAINT fk_ques_updated_by_id FOREIGN KEY (updated_by_id) REFERENCES user(id),
+  CONSTRAINT fk_ques_approved_by_id FOREIGN KEY (approved_by_id) REFERENCES user(id),
+  CONSTRAINT fk_ques_returned_by_id FOREIGN KEY (returned_by_id) REFERENCES user(id),
+  CONSTRAINT fk_ques_deleted_by_id FOREIGN KEY (deleted_by_id) REFERENCES user(id)
 );
 
 -- creating question_option table
