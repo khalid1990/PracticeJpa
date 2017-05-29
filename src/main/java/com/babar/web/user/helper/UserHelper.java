@@ -1,12 +1,16 @@
 package com.babar.web.user.helper;
 
 import com.babar.db.entity.User;
+import com.babar.framework.workflow.WorkflowManager;
 import com.babar.web.common.Action;
+import com.babar.web.common.ActionView;
 import com.babar.web.common.ViewMode;
 import com.babar.web.user.controller.UserController;
 import com.babar.web.user.model.UserCommand;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
+
+import java.util.Arrays;
 
 /**
  * @author babar
@@ -29,6 +33,8 @@ public class UserHelper {
 
     private UserCommand createUserCommand(User user, ViewMode viewMode, Action action) {
         UserCommand command = new UserCommand();
+        command.setUser(user);
+        command.setAv(new ActionView(viewMode, Arrays.asList(action)));
 
         return command;
     }
