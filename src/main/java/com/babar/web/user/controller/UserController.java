@@ -99,20 +99,17 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return USER_FORM;
         }
+        userService.update(user);
 
         return "redirect:" + Forwards.COMMON_DONE;
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_delete")
-    public String delete(@ModelAttribute(COMMAND_NAME) @Valid UserCommand command,
-                         BindingResult bindingResult) {
+    public String delete(@ModelAttribute(COMMAND_NAME) UserCommand command) {
 
         User user = command.getUser();
         helper.checkAccess(user, DELETE);
-
-        if (bindingResult.hasErrors()) {
-            return USER_FORM;
-        }
+        userService.delete(user);
 
         return "redirect:" + Forwards.COMMON_DONE;
     }
@@ -126,32 +123,4 @@ public class UserController {
     public String cancel() {
         return "redirect:" + Forwards.COMMON_DONE;
     }
-
-    /*@RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_approve")
-    public String approve(@ModelAttribute(COMMAND_NAME) @Valid UserCommand command,
-                         BindingResult bindingResult) {
-
-        User user = command.getUser();
-        helper.checkAccess(user, APPROVE);
-
-        if (bindingResult.hasErrors()) {
-            return USER_FORM;
-        }
-
-        return "redirect:" + Forwards.COMMON_DONE;
-    }
-
-    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_return")
-    public String returnToSubmitter(@ModelAttribute(COMMAND_NAME) @Valid UserCommand command,
-                         BindingResult bindingResult) {
-
-        User user = command.getUser();
-        helper.checkAccess(user, RETURN);
-
-        if (bindingResult.hasErrors()) {
-            return USER_FORM;
-        }
-
-        return "redirect:" + Forwards.COMMON_DONE;
-    }*/
 }

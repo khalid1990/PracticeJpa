@@ -14,14 +14,18 @@
 
     <c:set var="user" value="${command.user}"/>
 
+    <c:set var="readOnly" value="${command.av.readOnly}"/>
+
     <form:form action="index" commandName="command" method="post">
+
+        <form:hidden path="user.id"/>
 
         <b:section titleKey="label.user.info">
             <jsp:attribute name="body">
                 <div class="row">
                     <b:textField messageKey="label.first.name"
                                  bindPath="user.firstName"
-                                 readOnly="${command.av.readOnly}"
+                                 readOnly="${readOnly}"
                                  data="${user.firstName}"
                                  required="true"/>
                 </div>
@@ -29,7 +33,7 @@
                 <div class="row">
                     <b:textField messageKey="label.last.name"
                                  bindPath="user.lastName"
-                                 readOnly="${command.av.readOnly}"
+                                 readOnly="${readOnly}"
                                  data="${user.lastName}"
                                  required="true"/>
                 </div>
@@ -37,7 +41,7 @@
                 <div class="row">
                     <b:textField messageKey="label.email"
                                  bindPath="user.email"
-                                 readOnly="${command.av.readOnly}"
+                                 readOnly="${readOnly}"
                                  data="${user.email}"
                                  required="true"/>
                 </div>
@@ -46,11 +50,11 @@
                     <b:passwordField messageKey="label.password"
                                      bindPath="user.password"
                                      data="${user.password}"
-                                     readOnly="${command.av.readOnly}"
+                                     readOnly="${readOnly}"
                                      required="true"/>
                 </div>
 
-                <c:if test="${not command.av.readOnly}">
+                <c:if test="${not readOnly}">
                     <div class="row">
                         <b:passwordField messageKey="label.confirm.password"
                                          bindPath="user.confirmPassword"
@@ -62,7 +66,7 @@
                 <div class="row">
                     <b:textField messageKey="label.phone"
                                  bindPath="user.phone"
-                                 readOnly="${command.av.readOnly}"
+                                 readOnly="${readOnly}"
                                  data="${user.phone}"
                                  required="true"/>
                 </div>
@@ -70,7 +74,7 @@
                 <div class="row">
                     <b:selectBox messageKey="label.designation"
                                  bindPath="user.designation"
-                                 readOnly="${command.av.readOnly}"
+                                 readOnly="${readOnly}"
                                  itemLabel="name"
                                  data="${command.user.designation.name}"
                                  required="true"/>
@@ -79,7 +83,7 @@
                 <div class="row">
                     <b:textArea messageKey="label.address"
                                 bindPath="user.address"
-                                readOnly="${command.av.readOnly}"
+                                readOnly="${readOnly}"
                                 data="${user.address}"
                                 required="true"/>
                 </div>
@@ -96,15 +100,15 @@
             <jsp:attribute name="right">
                 <b:button name="_action_save"
                           value="label.save"
-                          hidden="${not command.av.canSave}"/>
+                          hidden="${not user.new}"/>
 
                 <b:button name="_action_update"
                           value="label.update"
-                          hidden="${not command.av.canUpdate}"/>
+                          hidden="${user.new or readOnly}"/>
 
                 <b:button name="_action_delete"
                           value="label.delete"
-                          hidden="${not command.av.canDelete}"/>
+                          hidden="${not readOnly}"/>
             </jsp:attribute>
         </b:buttonSection>
     </form:form>

@@ -22,6 +22,9 @@
     <c:otherwise>
         <label for="${bindPath}" class="col-sm-${labelSize} form-group">
             <fmt:message key="${messageKey}"/>
+            <c:if test="${required}">
+                <span class="text-danger">*</span>
+            </c:if>
         </label>
 
         <div class="col-sm-${valueSize} form-group">

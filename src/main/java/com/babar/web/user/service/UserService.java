@@ -34,18 +34,21 @@ public class UserService {
     }
 
     @Transactional
-    public User approve(User user) {
-        return doSave(user, Action.APPROVE);
-    }
-
-    @Transactional
-    public User delete(User user) {
-        return doSave(user, Action.DELETE);
-    }
-
-    @Transactional
-    public User returnToSubmitter(User user) {
-        return doSave(user, Action.RETURN);
+    public void delete(User user) {
+        em.remove(em.merge(user));
+        em.flush();
+        /*
+        * Why this em.merge() inside em.remove();
+        * As the find() and delete() are two different methods; When I was calling the methods from inside my
+        * controller method; JPA was creating a persistence context, starting a transaction when fetching the object
+        * from database, returning the object to controller and ending the persistence context. Thus the object became
+        * detached as soon as it was returned. So when I called the delete() method with this detached object I got
+        * an IllegalArgumentException.
+        *
+        * Now that I called the em.merge() method with the object inside the remove() method, JPA started a new
+        * transaction, created a PersistenceContext and merged the object with the db; now the object is attached to
+        * a persistence context as the remove() method was called, it performed successfully.
+        * */
     }
 
     private User doSave(User user, Action action) {

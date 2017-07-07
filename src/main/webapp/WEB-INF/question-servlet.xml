@@ -26,6 +26,16 @@
         Persistence context will find a Transaction
     -->
 
+    <!--
+        TODO: need to know the mechanism of this before using it
+        <mvc:interceptors>
+            <mvc:interceptor>
+                <mvc:mapping path="/**"/>
+                <bean class="org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor"/>
+            </mvc:interceptor>
+        </mvc:interceptors>
+    -->
+
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="prefix" value="/WEB-INF/views/jsp/question/"/>
