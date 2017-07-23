@@ -1,9 +1,11 @@
 package com.babar.web.question.helper;
 
+import com.babar.common.UserContext;
 import com.babar.db.common.enums.FormStatus;
 import com.babar.db.entity.Institution;
 import com.babar.framework.workflow.FormType;
 import com.babar.framework.workflow.WorkflowManager;
+import com.babar.security.Role;
 import com.babar.web.common.Action;
 import com.babar.web.common.ActionView;
 import com.babar.web.common.ViewMode;
@@ -20,6 +22,7 @@ public class InstitutionHelper {
 
     public Institution createNewInstitution() {
         Institution institution = new Institution();
+        institution.setStatus(FormStatus.NEW);
 
         return institution;
     }
@@ -30,8 +33,7 @@ public class InstitutionHelper {
 
     public void populateModel(ModelMap modelMap,
                               Institution institution,
-                              ViewMode viewMode,
-                              Action action) {
+                              ViewMode viewMode) {
 
         modelMap.put("command", createNewInstitutionCommand(institution, viewMode));
     }
@@ -39,8 +41,8 @@ public class InstitutionHelper {
     private InstitutionCommand createNewInstitutionCommand(Institution institution, ViewMode viewMode) {
         InstitutionCommand command = new InstitutionCommand();
         command.setInstitution(institution);
-        //Roles roles =
-        ActionView actionView = WorkflowManager.getActionView(FormType.FT_INSTITUTION, institution.getStatus(), viewMode);
+        ActionView actionView = WorkflowManager.getActionView(FormType.FT_INSTITUTION, institution.getStatus(),
+                viewMode, UserContext.getProfileRoles());
         command.setActionView(actionView);
 
         return command;
