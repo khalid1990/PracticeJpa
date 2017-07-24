@@ -26,9 +26,10 @@ CREATE TABLE user (
   address     VARCHAR(100),
   created     TIMESTAMP,
 
-  CONSTRAINT pk_user PRIMARY KEY (id),
+  CONSTRAINT pk_user_id PRIMARY KEY (id),
 
-  CONSTRAINT uk_email_phone UNIQUE (email, phone)
+  CONSTRAINT uk_user_email UNIQUE (email),
+  CONSTRAINT uk_user_phone UNIQUE (phone)
 );
 
 -- creating institution table
@@ -181,38 +182,3 @@ CREATE TABLE question_option (
 
   CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id)
 );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

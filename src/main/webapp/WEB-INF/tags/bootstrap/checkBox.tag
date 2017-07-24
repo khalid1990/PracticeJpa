@@ -21,6 +21,7 @@
     <form:checkbox path="${bindPath}"
                    label="${labelValue}"
                    disabled="${disabled}"
+                   cssClass="form-control"
                    id="${id}"/>
 
     <form:errors path="${bindPath}"/>

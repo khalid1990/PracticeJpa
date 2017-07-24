@@ -3,6 +3,7 @@ package com.babar.db.entity;
 import com.babar.db.common.enums.Designation;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -10,27 +11,37 @@ import java.util.Date;
  * @since 2/23/17.
  */
 @Entity
-public class User{
+public class User {
 
     @Id
     @GeneratedValue
     private int id;
 
+    @NotNull
     private String firstName;
 
+    @NotNull
     private String lastName;
 
+    @NotNull
     @Column(unique = true)
     private String email;
 
-    @Column(unique = true)
+    @NotNull
     private String password;
 
+    @Transient
+    @NotNull
+    private String confirmPassword;
+
+    @NotNull
     private String phone;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Designation designation;
 
+    @NotNull
     private String address;
 
     private Date created;
@@ -75,6 +86,14 @@ public class User{
         this.password = password;
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     public String getPhone() {
         return phone;
     }
@@ -109,5 +128,9 @@ public class User{
 
     public String getDisplayName() {
         return firstName + " " + lastName;
+    }
+
+    public boolean isNew() {
+        return id == 0;
     }
 }
