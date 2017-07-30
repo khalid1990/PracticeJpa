@@ -13,7 +13,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.context.request.RequestContextHolder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import static com.babar.web.common.Action.*;
 
@@ -21,8 +24,27 @@ import static com.babar.web.common.Action.*;
  * @author babar
  * @since 4/24/17.
  */
+/*
+* Here I have used the @SessionAttributes and passed it a attribute name,
+* if an object is set in the model attribute with the same name then
+* that object will also be stored in the session; So when a form is submitted
+* it will look for the form backing object that is the command object in the session,
+* it will take the object from session (if found) and update the relevant fields
+* with request parameters found from form submission.
+*
+* The object will be stored with the same name that is passed as argument
+* to the @SessionAttributes annotation in a default scenario. However this default
+* behavior can be modified by setting up a custom sessionAttributeStore
+* in the sessionAttributeStore parameter of RequestMappingHandlerAdapter.
+* I have my own custom implementation which is named
+* CommonSessionAttributeStore which extends DefaultSessionAttributeStore.
+* Some improvement to this class will solve multi tab issue for the same
+* and different form.
+*
+* */
 @Controller
 @RequestMapping("/institution")
+@SessionAttributes(InstitutionController.COMMAND_NAME)
 public class InstitutionController {
 
     private static final String INST_FORM = "inst-form";
@@ -51,7 +73,7 @@ public class InstitutionController {
 
         Institution institution = helper.createNewInstitution();
         helper.checkAccess(institution, SAVE);
-        helper.populateModel(modelMap, institution, ViewMode.EDITABLE, SAVE);
+        helper.populateModel(modelMap, institution, ViewMode.EDITABLE);
 
         return INST_FORM;
     }
@@ -61,7 +83,7 @@ public class InstitutionController {
 
         Institution institution = institutionService.find(id);
         helper.checkAccess(institution, VIEW);
-        helper.populateModel(modelMap, institution, ViewMode.READ_ONLY, VIEW);
+        helper.populateModel(modelMap, institution, ViewMode.READ_ONLY);
 
         return INST_FORM;
     }
@@ -71,7 +93,7 @@ public class InstitutionController {
 
         Institution institution = institutionService.find(id);
         helper.checkAccess(institution, UPDATE);
-        helper.populateModel(modelMap, institution, ViewMode.EDITABLE, UPDATE);
+        helper.populateModel(modelMap, institution, ViewMode.EDITABLE);
 
         return INST_FORM;
     }
@@ -94,13 +116,27 @@ public class InstitutionController {
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_update")
     public String update(@ModelAttribute(COMMAND_NAME) @Valid InstitutionCommand command,
                          BindingResult bindingResult) {
-
         Institution institution = command.getInstitution();
         helper.checkAccess(institution, UPDATE);
 
         if (bindingResult.hasErrors()) {
             return INST_FORM;
         }
+        institutionService.update(institution);
+
+        return "redirect:" + Forwards.COMMON_DONE;
+    }
+
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_submit")
+    public String submit(@ModelAttribute(COMMAND_NAME) @Valid InstitutionCommand command,
+                         BindingResult bindingResult) {
+        Institution institution = command.getInstitution();
+        helper.checkAccess(institution, SUBMIT);
+
+        if (bindingResult.hasErrors()) {
+            return INST_FORM;
+        }
+        institutionService.submit(institution);
 
         return "redirect:" + Forwards.COMMON_DONE;
     }
@@ -115,6 +151,7 @@ public class InstitutionController {
         if (bindingResult.hasErrors()) {
             return INST_FORM;
         }
+        institutionService.approve(institution);
 
         return "redirect:" + Forwards.COMMON_DONE;
     }
@@ -124,6 +161,7 @@ public class InstitutionController {
 
         Institution institution = command.getInstitution();
         helper.checkAccess(institution, DELETE);
+        institutionService.delete(institution);
 
         return "redirect:" + Forwards.COMMON_DONE;
     }
@@ -133,6 +171,7 @@ public class InstitutionController {
 
         Institution institution = command.getInstitution();
         helper.checkAccess(institution, RETURN);
+        institutionService.returnToSubmitter(institution);
 
         return "redirect:" + Forwards.COMMON_DONE;
     }

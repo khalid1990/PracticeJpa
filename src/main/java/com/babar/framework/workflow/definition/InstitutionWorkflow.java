@@ -25,7 +25,7 @@ public class InstitutionWorkflow {
                         on(DELETE).to(DELETED).
                     in(PENDING_APPROVAL).
                         on(UPDATE).to(PENDING_APPROVAL).
-                    on(APPROVE).to(APPROVED).
+                        on(APPROVE).to(APPROVED).
                         on(RETURN).to(RETURNED).
                         on(DELETE).to(DELETED).
                     in(APPROVED).
@@ -42,18 +42,17 @@ public class InstitutionWorkflow {
                         on(DELETE).to(DELETED).
                     in(DELETED).noAction(),
 
-                    with(QUESTION_PAPER_CREATE).in(NEW).can(SAVE),
+                    with(INSTITUTION_CREATE).in(NEW).can(SAVE),
 
-                    with(QUESTION_PAPER_UPDATE).in(DRAFT, PENDING_APPROVAL, APPROVED, PENDING_UPDATE_APPROVAL, RETURNED).can(UPDATE),
+                    with(INSTITUTION_UPDATE).in(DRAFT, PENDING_APPROVAL, APPROVED, PENDING_UPDATE_APPROVAL, RETURNED).can(UPDATE),
 
-                    with(QUESTION_PAPER_SUBMIT).in(DRAFT, RETURNED).can(SUBMIT),
+                    with(INSTITUTION_SUBMIT).in(DRAFT, RETURNED).can(SUBMIT),
 
-                    with(QUESTION_PAPER_APPROVE).in(PENDING_APPROVAL, PENDING_UPDATE_APPROVAL).can(APPROVE),
+                    with(INSTITUTION_APPROVE).in(PENDING_APPROVAL, PENDING_UPDATE_APPROVAL).can(APPROVE),
 
-                    with(QUESTION_PAPER_RETURN).in(PENDING_APPROVAL, PENDING_UPDATE_APPROVAL).can(RETURN),
+                    with(INSTITUTION_RETURN).in(PENDING_APPROVAL, PENDING_UPDATE_APPROVAL).can(RETURN),
 
-                    with(QUESTION_PAPER_DELETE).in(DRAFT, PENDING_APPROVAL, APPROVED, PENDING_UPDATE_APPROVAL, RETURNED).can(DELETE)
-
-            );
+                    with(INSTITUTION_DELETE).in(DRAFT, PENDING_APPROVAL, APPROVED, PENDING_UPDATE_APPROVAL, RETURNED).can(DELETE)
+        );
     }
 }

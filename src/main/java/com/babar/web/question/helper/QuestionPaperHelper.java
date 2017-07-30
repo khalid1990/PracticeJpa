@@ -46,9 +46,7 @@ public class QuestionPaperHelper {
     }
 
     private QuestionPaperCommand createNewCommand(QuestionPaper questionPaper, ViewMode viewMode, Action action) {
-        List<Action> actionList = Arrays.asList(action);
-
-        return new QuestionPaperCommand(questionPaper, new ActionView(viewMode, actionList), getBackLink());
+        return new QuestionPaperCommand(questionPaper, new ActionView(viewMode, Arrays.asList(action)), getBackLink());
     }
 
     private String getBackLink() {

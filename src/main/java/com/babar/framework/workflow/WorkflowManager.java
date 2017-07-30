@@ -33,25 +33,24 @@ public class WorkflowManager {
 
     public static FormStatus getNextStatus(FormType formType, FormStatus status, Action action) {
 
-        /*if (status == null) {
+        if (status == null) {
             throw new UnsupportedOperationException("This operation is not supported");
-        }*/
+        }
 
         return wfEngine.get(formType).getNextStatus(status, action);
     }
 
-    public static ActionView getActionView(FormType formType, FormStatus formStatus, ViewMode viewMode, Role... userRoles) {
-        List<Role> roles = Arrays.asList(userRoles);
-
+    public static ActionView getActionView(FormType formType, FormStatus formStatus, ViewMode viewMode, List<Role> roles) {
         List<Action> allowedActions = getAllowedActions(formType, formStatus, roles);
+
         return new ActionView(viewMode, allowedActions);
     }
 
     private static List<Action> getAllowedActions(FormType formType, FormStatus currentStatus, List<Role> roles) {
 
-        /*if (Util.isAnyNull(formType, currentStatus) || CollectionUtils.isEmpty(roles)) {
+        if (Util.isAnyNull(formType, currentStatus) || CollectionUtils.isEmpty(roles)) {
             throw new UnsupportedOperationException("This operation is not supported");
-        }*/
+        }
 
         return wfEngine.get(formType).getAllowedActions(currentStatus, roles);
     }

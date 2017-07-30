@@ -100,15 +100,15 @@
             <jsp:attribute name="right">
                 <b:button name="_action_save"
                           value="label.save"
-                          hidden="${not user.new}"/>
+                          visible="${command.av.canSave}"/>
 
                 <b:button name="_action_update"
                           value="label.update"
-                          hidden="${user.new or readOnly}"/>
+                          visible="${command.av.canUpdate}"/>
 
                 <b:button name="_action_delete"
                           value="label.delete"
-                          hidden="${not readOnly}"/>
+                          visible="${command.av.canDelete}"/>
             </jsp:attribute>
         </b:buttonSection>
     </form:form>

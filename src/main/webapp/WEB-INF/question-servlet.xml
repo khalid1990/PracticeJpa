@@ -44,5 +44,11 @@
 
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
-    <mvc:annotation-driven/>
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="sessionAttributeStore">
+            <bean class="com.babar.common.CommonSessionAttributeStore"/>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
 </beans>

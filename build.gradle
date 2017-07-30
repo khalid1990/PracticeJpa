@@ -1,6 +1,5 @@
 apply plugin: 'java'
 apply plugin: 'war'
-apply plugin: 'jetty'
 
 
 sourceCompatibility = 1.7
@@ -16,6 +15,7 @@ dependencies {
     compile 'org.springframework:spring-webmvc:4.1.6.RELEASE'
     compile 'org.springframework:spring-orm:4.1.6.RELEASE'
     compile 'javax.servlet:jstl:1.2'
+    compile 'javax:javaee-api:7.0'
 
     compile 'org.hibernate:hibernate-entitymanager:3.6.10.Final'
 
@@ -28,30 +28,3 @@ dependencies {
 
     compile 'opensymphony:sitemesh:2.4.2'
 }
-
-task copyWarToAppServer (type : Copy) {
-    from '/home/sherlock/IdeaProjects/PracticeJpa/build/libs/PracticeJpa-1.0.war'
-    into '/home/sherlock/app_server/apache-tomee-plus-7.0.3/webapps/'
-}
-
-jettyRun{
-    contextPath = "qbank"
-    httpPort = 8081
-}
-
-jettyRunWar{
-    contextPath = "qbank"
-    httpPort = 8081
-}
-
-/*
-task fatJar(type: Jar) {
-    manifest {
-        attributes 'Implementation-Title': 'Play Jpa',
-                'Implementation-Version': version,
-                'Main-Class': 'com.babar.app.MainApp'
-    }
-    baseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-}*/
