@@ -24,6 +24,7 @@ import static com.babar.web.common.Action.*;
  */
 @Controller
 @RequestMapping("/user")
+@SessionAttributes(UserController.COMMAND_NAME)
 public class UserController {
 
     public static final String COMMAND_NAME = "command";
@@ -41,7 +42,7 @@ public class UserController {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
-    @RequestMapping(value = "create", method = RequestMethod.GET)
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String create(ModelMap modelMap) {
         User user = helper.createNewUser();
 
@@ -51,19 +52,19 @@ public class UserController {
         return USER_FORM;
     }
 
-    @RequestMapping(value = "show", method = RequestMethod.GET)
+    @RequestMapping(value = "/show", method = RequestMethod.GET)
     public String show(@RequestParam("id") int id,
                        ModelMap modelMap) {
 
         User user = userService.find(id);
 
         helper.checkAccess(user, VIEW);
-        helper.populateModel(user, modelMap, ViewMode.READ_ONLY, VIEW);
+        helper.populateModel(user, modelMap, ViewMode.READ_ONLY, VIEW, DELETE);
 
         return USER_FORM;
     }
 
-    @RequestMapping(value = "edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String edit(@RequestParam("id") int id, ModelMap modelMap) {
 
         User user = userService.find(id);
@@ -72,6 +73,20 @@ public class UserController {
         helper.populateModel(user, modelMap, ViewMode.EDITABLE, UPDATE);
 
         return USER_FORM;
+    }
+
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_update_password")
+    public String changePassword(@ModelAttribute(COMMAND_NAME) @Valid UserCommand command,
+                                 BindingResult bindingResult) {
+        User user = command.getUser();
+        helper.checkAccess(user, UPDATE);
+
+        if (bindingResult.hasErrors()) {
+            return USER_FORM;
+        }
+        userService.update(user);
+
+        return "redirect:" + Forwards.COMMON_DONE;
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_save")

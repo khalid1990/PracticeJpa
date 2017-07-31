@@ -30,10 +30,6 @@ public class User {
     @NotNull
     private String password;
 
-    @Transient
-    @NotNull
-    private String confirmPassword;
-
     @NotNull
     private String phone;
 
@@ -45,6 +41,8 @@ public class User {
     private String address;
 
     private Date created;
+
+    private boolean active;
 
     public int getId() {
         return id;
@@ -86,14 +84,6 @@ public class User {
         this.password = password;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -124,6 +114,14 @@ public class User {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getDisplayName() {

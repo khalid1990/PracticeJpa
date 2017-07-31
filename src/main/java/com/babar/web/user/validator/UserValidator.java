@@ -10,7 +10,8 @@ import org.springframework.validation.Validator;
  * @since 5/23/17.
  */
 @Component
-public class UserValidator implements Validator{
+public class UserValidator implements Validator {
+
     @Override
     public boolean supports(Class<?> clazz) {
         return UserCommand.class.isAssignableFrom(clazz);
@@ -18,6 +19,6 @@ public class UserValidator implements Validator{
 
     @Override
     public void validate(Object target, Errors errors) {
-
+        /*validation logics need to be implemented for ChangePassword feature*/
     }
 }

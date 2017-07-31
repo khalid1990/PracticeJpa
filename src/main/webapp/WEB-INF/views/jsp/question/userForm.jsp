@@ -7,7 +7,7 @@
 <html>
 <head>
     <meta name="decorator" content="bootstrap-theme">
-    <title>User</title>
+    <title><fmt:message key="label.user"/></title>
 </head>
 <body>
     <b:formHeader titleKey="label.user" status=""/>
@@ -17,8 +17,6 @@
     <c:set var="readOnly" value="${command.av.readOnly}"/>
 
     <form:form action="index" commandName="command" method="post">
-
-        <form:hidden path="user.id"/>
 
         <b:section titleKey="label.user.info">
             <jsp:attribute name="body">
@@ -49,19 +47,19 @@
                 <div class="row">
                     <b:passwordField messageKey="label.password"
                                      bindPath="user.password"
-                                     data="${user.password}"
+                                     data="*****"
                                      readOnly="${readOnly}"
+                                     visible="${user.new or readOnly}"
                                      required="true"/>
                 </div>
 
-                <c:if test="${not readOnly}">
-                    <div class="row">
-                        <b:passwordField messageKey="label.confirm.password"
-                                         bindPath="user.confirmPassword"
-                                         data="${user.confirmPassword}"
-                                         required="true"/>
-                    </div>
-                </c:if>
+                <div class="row">
+                    <b:passwordField messageKey="label.confirm.password"
+                                     bindPath="confirmPassword"
+                                     data="${command.confirmPassword}"
+                                     visible="${user.new}"
+                                     required="true"/>
+                </div>
 
                 <div class="row">
                     <b:textField messageKey="label.phone"
@@ -89,6 +87,32 @@
                 </div>
             </jsp:attribute>
         </b:section>
+
+        <c:if test="${not user.new and not readOnly}">
+            <b:section titleKey="label.change.password">
+                <jsp:attribute name="body">
+                    <div class="row">
+                        <b:passwordField bindPath="oldPassword"
+                                         messageKey="label.enter.old.password"/>
+                    </div>
+
+                    <div class="row">
+                        <b:passwordField bindPath="user.password"
+                                         messageKey="label.enter.new.password"/>
+                    </div>
+
+                    <div class="row">
+                        <b:passwordField bindPath="confirmPassword"
+                                         messageKey="label.confirm.password"/>
+                    </div>
+                    
+                    <div class="row">
+                        <b:button name="_action_update_password"
+                                  value="label.update.password"/>
+                    </div>
+                </jsp:attribute>
+            </b:section>
+        </c:if>
 
         <b:buttonSection leftSectionSize="4">
             <jsp:attribute name="left">

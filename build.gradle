@@ -20,6 +20,11 @@ dependencies {
     compile 'org.hibernate:hibernate-entitymanager:3.6.10.Final'
 
     compile 'javax.validation:validation-api:1.1.0.Final'
+
+    /*
+    *The following declaration is used to keep a JSR-303 validator in the classpath.
+    * The presence of this + <mvc:annotation-driven> + @Valid = Bean validation
+    * */
     compile 'org.hibernate:hibernate-validator:5.4.1.Final'
 
     compile 'mysql:mysql-connector-java:5.1.31'

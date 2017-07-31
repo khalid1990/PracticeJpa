@@ -25,7 +25,7 @@
            title="${title}"
            type="${btnType}"
            value="<fmt:message key="${value}"/>"
-           class="btn ${btnClass}"
+           class="btn ${btnClass} col-sm-offset-${btnOffset}"
            onclick="${onClick}">
 </c:if>
 

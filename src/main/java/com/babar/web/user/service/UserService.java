@@ -25,19 +25,21 @@ public class UserService {
 
     @Transactional
     public User save(User user) {
-        return doSave(user, Action.SAVE);
+        return doSave(user);
     }
 
     @Transactional
     public User update(User user) {
-        return doSave(user, Action.UPDATE);
+        return doSave(user);
     }
 
     @Transactional
     public void delete(User user) {
-        em.remove(em.merge(user));
-        em.flush();
+        user.setActive(false);
+        doSave(user);
         /*
+        * em.remove(em.merge(user));
+        * em.flush();
         * Why this em.merge() inside em.remove();
         * As the find() and delete() are two different methods; When I was calling the methods from inside my
         * controller method; JPA was creating a persistence context, starting a transaction when fetching the object
@@ -51,7 +53,7 @@ public class UserService {
         * */
     }
 
-    private User doSave(User user, Action action) {
+    private User doSave(User user) {
 
         if (user.isNew()) {
             em.persist(user);
