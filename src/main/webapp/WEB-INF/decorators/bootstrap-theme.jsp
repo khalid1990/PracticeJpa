@@ -24,6 +24,7 @@
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/bootstrap-3.3.7-dist/css/bootstrap.css"/>"/>
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/common.css"/>"/>
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/jquery-ui-1.12.1/jquery-ui.min.css"/>"/>
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/font-awesome-4.7.0/css/font-awesome.min.css"/>">
 
     <decorator:head/>
 </head>
