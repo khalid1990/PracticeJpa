@@ -27,14 +27,18 @@
     -->
 
     <!--
-        TODO: need to know the mechanism of this before using it
-        <mvc:interceptors>
-            <mvc:interceptor>
-                <mvc:mapping path="/**"/>
-                <bean class="org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor"/>
-            </mvc:interceptor>
-        </mvc:interceptors>
+        This following bean "OpenEntityManagerInViewInterceptor" prevents LazyInitializationException by keeping the
+        EntityManager open while view is being rendered. Otherwise when a service method returns
+        the persistence context is closed and all the lazily initialized objects are detached
+        which results in LazyInitializationException.
     -->
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>

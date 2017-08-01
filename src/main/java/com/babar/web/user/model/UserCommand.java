@@ -21,6 +21,10 @@ public class UserCommand implements Serializable{
 
     private ActionView av;
 
+    private String oldPassword;
+
+    private String confirmPassword;
+
     public UserCommand() {
     }
 
@@ -52,5 +56,21 @@ public class UserCommand implements Serializable{
 
     public void setAv(ActionView av) {
         this.av = av;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

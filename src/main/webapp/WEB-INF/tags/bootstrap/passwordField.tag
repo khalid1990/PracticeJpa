@@ -10,30 +10,32 @@
 <%@attribute name="valueSize" type="java.lang.String" %>
 <%@attribute name="readOnly" type="java.lang.Boolean" %>
 <%@attribute name="required" type="java.lang.Boolean" %>
+<%@attribute name="visible" type="java.lang.Boolean" %>
 
 <c:set var="labelSize" value="${not empty labelSize ? labelSize : 2}"/>
 <c:set var="valueSize" value="${not empty valueSize ? valueSize : 4}"/>
+<c:set var="visible" value="${not empty visible ? visible : true}"/>
 
-<c:choose>
-    <c:when test="${readOnly}">
-        <b:labelValue messageKey="${messageKey}"
-                      value="${data}"/>
-    </c:when>
-    <c:otherwise>
-        <label for="${bindPath}" class="col-sm-${labelSize} form-group">
-            <fmt:message key="${messageKey}"/>
-            <c:if test="${required}">
-                <span class="text-danger">*</span>
-            </c:if>
-        </label>
+<c:if test="${visible}">
+    <c:choose>
+        <c:when test="${readOnly}">
+            <b:labelValue messageKey="${messageKey}"
+                          value="${data}"/>
+        </c:when>
+        <c:otherwise>
+            <label for="${bindPath}" class="col-sm-${labelSize} form-group">
+                <fmt:message key="${messageKey}"/>
+                <c:if test="${required}">
+                    <span class="text-danger">*</span>
+                </c:if>
+            </label>
 
-        <div class="col-sm-${valueSize} form-group">
-            <form:password path="${bindPath}"
-                           cssClass="form-control"/>
+            <div class="col-sm-${valueSize} form-group">
+                <form:password path="${bindPath}"
+                               cssClass="form-control"/>
 
-            <form:errors path="${bindPath}"/>
-        </div>
-    </c:otherwise>
-</c:choose>
-
-
+                <form:errors path="${bindPath}"/>
+            </div>
+        </c:otherwise>
+    </c:choose>
+</c:if>

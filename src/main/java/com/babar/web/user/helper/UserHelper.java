@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author babar
@@ -20,21 +21,24 @@ import java.util.Arrays;
 public class UserHelper {
 
     public User createNewUser() {
-        return new User();
+        User user = new User();
+        user.setActive(true);
+
+        return user;
     }
 
     public void checkAccess(User user, Action action) {
 
     }
 
-    public void populateModel(User user, ModelMap modelMap, ViewMode viewMode, Action action) {
-        modelMap.put(UserController.COMMAND_NAME, createUserCommand(user, viewMode, action));
+    public void populateModel(User user, ModelMap modelMap, ViewMode viewMode, Action... actions) {
+        modelMap.put(UserController.COMMAND_NAME, createUserCommand(user, viewMode, Arrays.asList(actions)));
     }
 
-    private UserCommand createUserCommand(User user, ViewMode viewMode, Action action) {
+    private UserCommand createUserCommand(User user, ViewMode viewMode, List<Action> actions) {
         UserCommand command = new UserCommand();
         command.setUser(user);
-        command.setAv(new ActionView(viewMode, Arrays.asList(action)));
+        command.setAv(new ActionView(viewMode, actions));
 
         return command;
     }

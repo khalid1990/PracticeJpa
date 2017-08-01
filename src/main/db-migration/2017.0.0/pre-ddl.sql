@@ -25,6 +25,7 @@ CREATE TABLE user (
   designation VARCHAR(20),
   address     VARCHAR(100),
   created     TIMESTAMP,
+  active       INT (1)
 
   CONSTRAINT pk_user_id PRIMARY KEY (id),
 
