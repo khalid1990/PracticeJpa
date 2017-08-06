@@ -1,13 +1,17 @@
 package com.babar.web.user.service;
 
+import com.babar.db.common.enums.Designation;
 import com.babar.db.entity.User;
-import com.babar.web.common.Action;
-import org.springframework.stereotype.Component;
+import com.babar.utils.StringUtils;
+import com.babar.web.user.helper.UserHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.List;
 
 /**
  * @author babar
@@ -21,6 +25,45 @@ public class UserService {
 
     public User find(int id) {
         return em.find(User.class, id);
+    }
+
+    public List<User> getAllUsers() {
+        return em.createQuery("Select u from User u", User.class).getResultList();
+    }
+
+    public List<User> getFilteredUsers(String filterProperty,
+                                       String filterValue,
+                                       String sortProperty,
+                                       String sortOrder,
+                                       int startIndex,
+                                       int recordsPerPage) {
+        String sql = "Select u from User u ";
+
+        boolean filtering = false;
+
+        if (!StringUtils.isAnyEmpty(filterProperty, filterValue)) {
+            sql += "where " + filterProperty + " like :filterValue ";
+            filtering = true;
+        }
+
+        if (!StringUtils.isAnyEmpty(sortProperty, sortOrder)) {
+            sql += " order by " + sortProperty + " " + sortOrder;
+        }
+
+        Query query = em.createQuery(sql, User.class);
+
+        if (filtering) {
+            if ("designation".equals(filterProperty)) {
+                Designation designation = resolveToDesignation(filterValue);
+                query.setParameter("filterValue", designation);
+            } else {
+                query.setParameter("filterValue", "%" + filterValue + "%");
+            }
+        }
+
+        return query.setFirstResult(startIndex)
+                    .setMaxResults(recordsPerPage)
+                    .getResultList();
     }
 
     @Transactional
@@ -63,5 +106,15 @@ public class UserService {
         em.flush();
 
         return user;
+    }
+
+    private Designation resolveToDesignation(String value) {
+        for (Designation d : Designation.values()) {
+            if (d.getName().toLowerCase().contains((value.toLowerCase()))) {
+                return d;
+            }
+        }
+
+        return null;
     }
 }

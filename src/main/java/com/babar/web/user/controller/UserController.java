@@ -1,6 +1,7 @@
 package com.babar.web.user.controller;
 
 import com.babar.db.entity.User;
+import com.babar.utils.StringUtils;
 import com.babar.web.common.Forwards;
 import com.babar.web.common.ViewMode;
 import com.babar.web.user.helper.UserHelper;
@@ -30,6 +31,8 @@ public class UserController {
     public static final String COMMAND_NAME = "command";
 
     private static final String USER_FORM = "userForm";
+
+    private static final String USER_LIST_VIEW = "userListView";
 
     @Autowired
     private UserHelper helper;
@@ -73,6 +76,20 @@ public class UserController {
         helper.populateModel(user, modelMap, ViewMode.EDITABLE, UPDATE);
 
         return USER_FORM;
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String list(@RequestParam(value = "currentIndex", required = false, defaultValue = "0") int currentIndex,
+                       @RequestParam(value = "sortProperty", required = false) String sortProperty,
+                       @RequestParam(value = "sortOrder", required = false) String sortOrder,
+                       @RequestParam(value = "filterProperty", required = false) String filterProperty,
+                       @RequestParam(value = "filterValue", required = false) String filterValue,
+                       ModelMap modelMap) {
+
+        helper.populateModelWithListTableInfo(currentIndex, sortOrder, sortProperty,
+                filterProperty, filterValue, modelMap);
+
+        return USER_LIST_VIEW;
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_update_password")
