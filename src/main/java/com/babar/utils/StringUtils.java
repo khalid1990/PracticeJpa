@@ -19,4 +19,9 @@ public class StringUtils {
     public static boolean isEmpty(String s) {
         return s == null || "".equals(s.trim());
     }
+
+    public static boolean isContained(String base, String comparing) {
+
+        return isEmpty(base) || isEmpty(comparing) ? false : base.toLowerCase().contains(comparing.toLowerCase());
+    }
 }

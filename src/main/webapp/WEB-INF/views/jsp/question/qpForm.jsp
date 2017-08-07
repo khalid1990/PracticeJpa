@@ -17,9 +17,11 @@
 </head>
 <body>
     <c:set var="qp" value="${command.questionPaper}"/>
+    <c:set var="av" value="${command.actionView}"/>
+    <c:set var="readOnly" value="${av.readOnly}"/>
 
     <b:formHeader titleKey="label.question.paper"
-                  status="New"
+                  status="${qp.status}"
                   createdBy="${qp.createdBy.displayName}"
                   created="${qp.created}"
                   updatedBy="${qp.updatedBy.displayName}"
@@ -33,52 +35,104 @@
 
     <form:form action="index" method="post" commandName="command">
 
-        <b:textField messageKey="qp.exam.title"
-                     bindPath="questionPaper.examTitle"
-                     required="true"/>
+        <b:section showHeader="false">
+            <jsp:attribute name="body">
+                <div class="row">
+                    <b:textField messageKey="qp.exam.title"
+                                 bindPath="questionPaper.examTitle"
+                                 data="${qp.examTitle}"
+                                 readOnly="${readOnly}"
+                                 required="true"/>
+                </div>
 
-        <b:textField messageKey="qp.exam.serial"
-                     bindPath="questionPaper.examSerial"
-                     required="true"/>
+                <div class="row">
+                    <b:textField messageKey="qp.exam.serial"
+                                 bindPath="questionPaper.examSerial"
+                                 data="${qp.examSerial}"
+                                 readOnly="${readOnly}"
+                                 required="true"/>
+                </div>
 
-        <b:inputDateTime messageKey="qp.exam.date"
-                         bindPath="questionPaper.examDate"/>
+                <div class="row">
+                    <b:inputDateTime messageKey="qp.exam.date"
+                                     data="${qp.examDate}"
+                                     readOnly="${readOnly}"
+                                     bindPath="questionPaper.examDate"/>
+                </div>
 
-        <b:selectBox messageKey="qp.institution"
-                     bindPath="questionPaper.institution"
-                     optionsList="${institutions}"
-                     itemLabel="institutionName"
-                     itemValue="id"/>
-        
-        <b:selectBox messageKey="qp.language"
-                     bindPath="questionPaper.lang"
-                     itemLabel="name"
-                     required="true"/>
-        
-        <b:selectBox messageKey="qp.exam.type"
-                     bindPath="questionPaper.examType"
-                     itemLabel="name"
-                     required="true"/>
+                <div class="row">
+                    <b:selectBox messageKey="qp.institution"
+                                 bindPath="questionPaper.institution"
+                                 data="${qp.institution.institutionName}"
+                                 optionsList="${institutions}"
+                                 readOnly="${readOnly}"
+                                 itemLabel="institutionName"
+                                 itemValue="id"/>
+                </div>
 
-        <b:selectBox messageKey="qp.exam.category"
-                     bindPath="questionPaper.examCategory"
-                     itemLabel="name"
-                     required="true"/>
+                <div class="row">
+                    <b:selectBox messageKey="qp.language"
+                                 bindPath="questionPaper.lang"
+                                 data="${qp.lang}"
+                                 readOnly="${readOnly}"
+                                 itemLabel="name"
+                                 required="true"/>
+                </div>
 
-        <b:textField messageKey="qp.total.time"
-                     bindPath="questionPaper.totalTimeInSeconds"/>
-        
-        <b:textField messageKey="qp.total.questions"
-                     bindPath="questionPaper.totalQuestions"/>
+                <div class="row">
+                    <b:selectBox messageKey="qp.exam.type"
+                                 bindPath="questionPaper.examType"
+                                 data="${qp.examType}"
+                                 readOnly="${readOnly}"
+                                 itemLabel="name"
+                                 required="true"/>
+                </div>
 
-        <b:textField messageKey="qp.marks.per.question"
-                     bindPath="questionPaper.marksPerQuestion"/>
+                <div class="row">
+                    <b:selectBox messageKey="qp.exam.category"
+                                 bindPath="questionPaper.examCategory"
+                                 data="${qp.examCategory}"
+                                 readOnly="${readOnly}"
+                                 itemLabel="name"
+                                 required="true"/>
+                </div>
 
-        <b:textField messageKey="qp.negative.marking.percentage"
-                     bindPath="questionPaper.negativeMarkingPercentage"/>
+                <div class="row">
+                    <b:textField messageKey="qp.total.time"
+                                 readOnly="${readOnly}"
+                                 data="${qp.totalTimeInSeconds}"
+                                 bindPath="questionPaper.totalTimeInSeconds"/>
+                </div>
 
-        <b:textArea messageKey="qp.instruction"
-                     bindPath="questionPaper.instruction"/>
+                <div class="row">
+                    <b:textField messageKey="qp.total.questions"
+                                 data="${qp.totalQuestions}"
+                                 readOnly="${readOnly}"
+                                 bindPath="questionPaper.totalQuestions"/>
+                </div>
+
+                <div class="row">
+                    <b:textField messageKey="qp.marks.per.question"
+                                 readOnly="${readOnly}"
+                                 data="${qp.marksPerQuestion}"
+                                 bindPath="questionPaper.marksPerQuestion"/>
+                </div>
+
+                <div class="row">
+                    <b:textField messageKey="qp.negative.marking.percentage"
+                                 readOnly="${readOnly}"
+                                 data="${qp.negativeMarkingPercentage}"
+                                 bindPath="questionPaper.negativeMarkingPercentage"/>
+                </div>
+
+                <div class="row">
+                    <b:textArea messageKey="qp.instruction"
+                                readOnly="${readOnly}"
+                                data="${qp.instruction}"
+                                bindPath="questionPaper.instruction"/>
+                </div>
+            </jsp:attribute>
+        </b:section>
 
         <b:buttonSection leftSectionSize="3">
             <jsp:attribute name="left">
@@ -87,7 +141,46 @@
             </jsp:attribute>
 
             <jsp:attribute name="right">
-                <b:button name="_action_save" value="label.save"/>
+                <c:choose>
+                    <c:when test="${readOnly}">
+                        <c:if test="${av.canUpdate}">
+                            <c:url var="editUrl" value="/qbank/questionPaper/edit">
+                                <c:param name="id" value="${qp.id}"/>
+                            </c:url>
+
+                            <b:button name="editUrl"
+                                      value="label.edit"
+                                      type="button"
+                                      onClick="window.location='${editUrl}'"/>
+                        </c:if>
+
+                        <b:button name="_action_submit"
+                                  value="label.submit"
+                                  visible="${av.canSubmit}"/>
+
+                        <b:button name="_action_approve"
+                                  value="label.approve"
+                                  visible="${av.canApprove}"/>
+
+                        <b:button name="_action_return"
+                                  value="label.return"
+                                  visible="${av.canReturn}"/>
+
+                        <b:button name="_action_delete"
+                                  value="label.delete"
+                                  visible="${av.canDelete}"/>
+                    </c:when>
+
+                    <c:otherwise>
+                        <b:button name="_action_update"
+                                  value="label.update"
+                                  visible="${av.canUpdate}"/>
+
+                        <b:button name="_action_save"
+                                  value="label.save"
+                                  visible="${av.canSave}"/>
+                    </c:otherwise>
+                </c:choose>
             </jsp:attribute>
         </b:buttonSection>
     </form:form>

@@ -6,12 +6,10 @@ import com.babar.framework.workflow.FormType;
 import com.babar.framework.workflow.WorkflowManager;
 import com.babar.web.common.Action;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +26,7 @@ public class InstitutionService {
         return em.find(Institution.class, id);
     }
 
-    public List<Institution> findAll () {
+    public List<Institution> findAll() {
         return em.createNamedQuery("findAllInstitutions", Institution.class).getResultList();
     }
 

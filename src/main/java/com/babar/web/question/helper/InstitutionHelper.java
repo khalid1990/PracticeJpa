@@ -9,6 +9,7 @@ import com.babar.security.Role;
 import com.babar.web.common.Action;
 import com.babar.web.common.ActionView;
 import com.babar.web.common.ViewMode;
+import com.babar.web.question.controller.InstitutionController;
 import com.babar.web.question.model.InstitutionCommand;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
@@ -35,7 +36,7 @@ public class InstitutionHelper {
                               Institution institution,
                               ViewMode viewMode) {
 
-        modelMap.put("command", createNewInstitutionCommand(institution, viewMode));
+        modelMap.put(InstitutionController.COMMAND_NAME, createNewInstitutionCommand(institution, viewMode));
     }
 
     private InstitutionCommand createNewInstitutionCommand(Institution institution, ViewMode viewMode) {

@@ -1,8 +1,6 @@
 package com.babar.web.user.helper;
 
-import com.babar.db.common.enums.Designation;
 import com.babar.db.entity.User;
-import com.babar.utils.StringUtils;
 import com.babar.web.common.Action;
 import com.babar.web.common.ActionView;
 import com.babar.web.common.ViewMode;
@@ -49,33 +47,26 @@ public class UserHelper {
     public void populateModelWithListTableInfo(int currentIndex,
                                                String sortOrder,
                                                String sortProperty,
-                                               String filterProperty,
-                                               String filterValue,
                                                ModelMap modelMap) {
 
 
         modelMap.put("currentIndex", currentIndex);
         modelMap.put("listUrl", "/qbank/user/list");
+        modelMap.put("recordLoaderUrl", "/qbank/user/show");
         modelMap.put("sortOrder", sortOrder);
         modelMap.put("sortProperty", sortProperty);
 
         int startIndex = currentIndex * RECORDS_PER_PAGE;
-        List<User> filteredUsers = userService.getFilteredUsers(filterProperty, filterValue,
-                sortProperty, sortOrder, startIndex, RECORDS_PER_PAGE);
-        modelMap.put("records", filteredUsers);
+        List<User> records = userService.getSortedUsers(sortProperty, sortOrder, startIndex, RECORDS_PER_PAGE);
+        modelMap.put("records", records);
 
-        int usersCount = CollectionUtils.isEmpty(filteredUsers) ? 0 : filteredUsers.size();
+        int usersCount = CollectionUtils.isEmpty(records) ? 0 : records.size();
         if (usersCount < RECORDS_PER_PAGE || usersCount == 0) {
             modelMap.put("disableNextButton", true);
         }
 
         if (usersCount == 0) {
             modelMap.put("noResultFound", true);
-        }
-
-        if (!StringUtils.isAnyEmpty(filterProperty, filterValue)) {
-            modelMap.put("filterProperty", filterProperty);
-            modelMap.put("filterValue", filterValue);
         }
 
         Map<String, String> propertyColumnNamMap = new LinkedHashMap<>();

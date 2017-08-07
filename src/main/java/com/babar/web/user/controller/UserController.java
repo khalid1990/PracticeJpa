@@ -82,12 +82,9 @@ public class UserController {
     public String list(@RequestParam(value = "currentIndex", required = false, defaultValue = "0") int currentIndex,
                        @RequestParam(value = "sortProperty", required = false) String sortProperty,
                        @RequestParam(value = "sortOrder", required = false) String sortOrder,
-                       @RequestParam(value = "filterProperty", required = false) String filterProperty,
-                       @RequestParam(value = "filterValue", required = false) String filterValue,
                        ModelMap modelMap) {
 
-        helper.populateModelWithListTableInfo(currentIndex, sortOrder, sortProperty,
-                filterProperty, filterValue, modelMap);
+        helper.populateModelWithListTableInfo(currentIndex, sortOrder, sortProperty, modelMap);
 
         return USER_LIST_VIEW;
     }
