@@ -19,7 +19,14 @@ public class UserContext {
                 INSTITUTION_SUBMIT,
                 INSTITUTION_APPROVE,
                 INSTITUTION_RETURN,
-                INSTITUTION_DELETE
+                INSTITUTION_DELETE,
+
+                QUESTION_PAPER_CREATE,
+                QUESTION_PAPER_UPDATE,
+                QUESTION_PAPER_SUBMIT,
+                QUESTION_PAPER_APPROVE,
+                QUESTION_PAPER_RETURN,
+                QUESTION_PAPER_DELETE
                 );
     }
 }

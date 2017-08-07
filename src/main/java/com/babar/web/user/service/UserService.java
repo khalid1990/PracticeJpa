@@ -3,8 +3,6 @@ package com.babar.web.user.service;
 import com.babar.db.common.enums.Designation;
 import com.babar.db.entity.User;
 import com.babar.utils.StringUtils;
-import com.babar.web.user.helper.UserHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,39 +29,20 @@ public class UserService {
         return em.createQuery("Select u from User u", User.class).getResultList();
     }
 
-    public List<User> getFilteredUsers(String filterProperty,
-                                       String filterValue,
-                                       String sortProperty,
-                                       String sortOrder,
-                                       int startIndex,
-                                       int recordsPerPage) {
+    public List<User> getSortedUsers(String sortProperty,
+                                     String sortOrder,
+                                     int startIndex,
+                                     int recordsPerPage) {
         String sql = "Select u from User u ";
-
-        boolean filtering = false;
-
-        if (!StringUtils.isAnyEmpty(filterProperty, filterValue)) {
-            sql += "where " + filterProperty + " like :filterValue ";
-            filtering = true;
-        }
 
         if (!StringUtils.isAnyEmpty(sortProperty, sortOrder)) {
             sql += " order by " + sortProperty + " " + sortOrder;
         }
-
         Query query = em.createQuery(sql, User.class);
 
-        if (filtering) {
-            if ("designation".equals(filterProperty)) {
-                Designation designation = resolveToDesignation(filterValue);
-                query.setParameter("filterValue", designation);
-            } else {
-                query.setParameter("filterValue", "%" + filterValue + "%");
-            }
-        }
-
         return query.setFirstResult(startIndex)
-                    .setMaxResults(recordsPerPage)
-                    .getResultList();
+                .setMaxResults(recordsPerPage)
+                .getResultList();
     }
 
     @Transactional

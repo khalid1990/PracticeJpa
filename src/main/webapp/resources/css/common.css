@@ -43,7 +43,9 @@ a[disabled], a[disabled]:hover {
     opacity: .6;
 }
 
-
+.panel {
+    width: 800px;
+}
 
 
 

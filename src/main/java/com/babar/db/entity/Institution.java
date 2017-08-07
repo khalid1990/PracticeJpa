@@ -72,4 +72,9 @@ public class Institution extends Persistence {
 
         return result;
     }
+
+    @Override
+    public String toString() {
+        return institutionName;
+    }
 }

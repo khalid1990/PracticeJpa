@@ -33,11 +33,14 @@ import static com.babar.web.common.Action.*;
  */
 @Controller
 @RequestMapping("questionPaper")
+@SessionAttributes(QuestionPaperController.COMMAND_NAME)
 public class QuestionPaperController {
 
     private static final String QP_FORM = "qpForm";
 
     public static final String COMMAND_NAME = "command";
+
+    public static final String QP_LIST_VEW = "qpListView";
 
     @Autowired
     private QuestionPaperHelper helper;
@@ -60,7 +63,9 @@ public class QuestionPaperController {
         QuestionPaper questionPaper = helper.createQuestionPaper();
 
         helper.checkAccess(questionPaper, SAVE);
-        helper.populateModel(questionPaper, modelMap, EDITABLE, SAVE);
+
+        modelMap.addAttribute("institutions", institutionService.findAll());
+        helper.populateModel(questionPaper, modelMap, EDITABLE);
 
         return QP_FORM;
     }
@@ -72,7 +77,9 @@ public class QuestionPaperController {
         QuestionPaper questionPaper = questionPaperService.find(id);
 
         helper.checkAccess(questionPaper, VIEW);
-        helper.populateModel(questionPaper, modelMap, READ_ONLY, VIEW);
+
+        modelMap.addAttribute("institutions", institutionService.findAll());
+        helper.populateModel(questionPaper, modelMap, READ_ONLY);
 
         return QP_FORM;
     }
@@ -84,9 +91,22 @@ public class QuestionPaperController {
         QuestionPaper questionPaper = questionPaperService.find(id);
 
         helper.checkAccess(questionPaper, UPDATE);
-        helper.populateModel(questionPaper, modelMap, EDITABLE, UPDATE);
+
+        modelMap.addAttribute("institutions", institutionService.findAll());
+        helper.populateModel(questionPaper, modelMap, EDITABLE);
 
         return QP_FORM;
+    }
+
+    @RequestMapping(value = "list", method = RequestMethod.GET)
+    public String list(@RequestParam(value = "currentIndex", required = false, defaultValue = "0") int currentIndex,
+                       @RequestParam(value = "sortProperty", required = false) String sortProperty,
+                       @RequestParam(value = "sortOrder", required = false) String sortOrder,
+                       ModelMap modelMap) {
+
+        helper.populateModelWithListTableInfo(currentIndex, sortOrder, sortProperty, modelMap);
+
+        return QP_LIST_VEW;
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_save")
@@ -94,10 +114,11 @@ public class QuestionPaperController {
                        BindingResult bindingResult,
                        ModelMap modelMap) {
 
+        QuestionPaper questionPaper = command.getQuestionPaper();
         if (bindingResult.hasErrors()) {
-            helper.populateModelWithInstitutions(modelMap);
             return QP_FORM;
         }
+        questionPaperService.save(questionPaper);
 
         return "redirect:" + Forwards.COMMON_DONE;
     }
@@ -107,37 +128,62 @@ public class QuestionPaperController {
                          BindingResult bindingResult,
                          ModelMap modelMap) {
 
+        QuestionPaper questionPaper = command.getQuestionPaper();
         if (bindingResult.hasErrors()) {
-            helper.populateModelWithInstitutions(modelMap);
             return QP_FORM;
         }
+        questionPaperService.update(questionPaper);
 
         return "redirect:" + Forwards.COMMON_DONE;
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_submit")
-    public String submit(@ModelAttribute(COMMAND_NAME) QuestionPaperCommand command) {
+    public String submit(@ModelAttribute(COMMAND_NAME) @Valid QuestionPaperCommand command,
+                         BindingResult bindingResult) {
+
+        QuestionPaper questionPaper = command.getQuestionPaper();
+        if (bindingResult.hasErrors()) {
+            return QP_FORM;
+        }
+        questionPaperService.submit(questionPaper);
+
         return "redirect:" + Forwards.COMMON_DONE;
     }
-
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_approve")
     public String approve(@ModelAttribute(COMMAND_NAME) @Valid QuestionPaperCommand  command,
                           BindingResult bindingResult) {
+        QuestionPaper questionPaper = command.getQuestionPaper();
+
         if (bindingResult.hasErrors()) {
             return QP_FORM;
         }
+        questionPaperService.approve(questionPaper);
 
         return "redirect:" + Forwards.COMMON_DONE;
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_delete")
-    public String delete() {
+    public String delete(@ModelAttribute(COMMAND_NAME) @Valid QuestionPaperCommand command,
+                         BindingResult bindingResult) {
+        QuestionPaper questionPaper = command.getQuestionPaper();
+        if (bindingResult.hasErrors()) {
+            return QP_FORM;
+        }
+        questionPaperService.delete(questionPaper);
+
         return "redirect:" + Forwards.COMMON_DONE;
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_return")
-    public String returnToSubmitter() {
+    public String returnToSubmitter(@ModelAttribute(COMMAND_NAME) QuestionPaperCommand command,
+                                    BindingResult bindingResult) {
+        QuestionPaper questionPaper = command.getQuestionPaper();
+        if (bindingResult.hasErrors()) {
+            return QP_FORM;
+        }
+        questionPaperService.returnToSubmitter(questionPaper);
+
         return "redirect:" + Forwards.COMMON_DONE;
     }
 }

@@ -11,13 +11,12 @@
     <meta name="decorator" content="bootstrap-theme">
 </head>
 <body>
-    <b:listViewWithFiltering titleKey="label.user.list"
+    <b:listView titleKey="label.user.list"
                           currentIndex="${currentIndex}"
                           disableNextButton="${disableNextButton}"
                           propertyColumnNameMap="${propertyColumnNameMap}"
                           records="${records}"
-                          filterProperty="${filterProperty}"
-                          filterValue="${filterValue}"
+                          recordLoaderUrl="${recordLoaderUrl}"
                           sortProperty="${sortProperty}"
                           sortOrder="${sortOrder}"
                           listUrl="${listUrl}"/>
