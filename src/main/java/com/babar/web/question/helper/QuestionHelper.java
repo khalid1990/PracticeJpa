@@ -1,10 +1,17 @@
 package com.babar.web.question.helper;
 
+import com.babar.common.UserContext;
 import com.babar.db.common.enums.ExamCategory;
 import com.babar.db.common.enums.ExamSubCategory;
+import com.babar.db.common.enums.FormStatus;
 import com.babar.db.entity.Question;
+import com.babar.db.entity.QuestionPaper;
+import com.babar.framework.workflow.FormType;
+import com.babar.framework.workflow.WorkflowManager;
 import com.babar.web.common.Action;
+import com.babar.web.common.ActionView;
 import com.babar.web.common.ViewMode;
+import com.babar.web.question.controller.QuestionController;
 import com.babar.web.question.model.QuestionCommand;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
@@ -16,8 +23,12 @@ import org.springframework.ui.ModelMap;
 @Component
 public class QuestionHelper {
 
-    public Question createNewQuestion() {
-        return new Question();
+    public Question createNewQuestion(QuestionPaper questionPaper) {
+        Question question = new Question();
+        question.setQuestionPaper(questionPaper);
+        question.setStatus(FormStatus.NEW);
+
+        return question;
     }
 
     public void checkAccess(Question question, Action action) {
@@ -26,22 +37,17 @@ public class QuestionHelper {
 
     public void populateModel(ModelMap modelMap,
                               Question question,
-                              ExamCategory examCategory,
-                              ViewMode viewMode,
-                              Action action) {
+                              ViewMode viewMode) {
 
-        modelMap.put("command", createQuestionCommand(question));
-        populateModelWithSubCategories(modelMap, examCategory);
+        modelMap.put(QuestionController.COMMAND_NAME, createQuestionCommand(question, viewMode));
     }
 
-    public void populateModelWithSubCategories(ModelMap modelMap, ExamCategory examCategory) {
-        modelMap.put("subCategories", ExamSubCategory.getSubCategories(examCategory));
-    }
-
-    private QuestionCommand createQuestionCommand(Question question) {
+    private QuestionCommand createQuestionCommand(Question question, ViewMode viewMode) {
 
         QuestionCommand command = new QuestionCommand();
         command.setQuestion(question);
+        ActionView actionView = WorkflowManager.getActionView(FormType.FT_QUESTION, question.getStatus(), viewMode, UserContext.getProfileRoles());
+        command.setActionView(actionView);
 
         return command;
     }

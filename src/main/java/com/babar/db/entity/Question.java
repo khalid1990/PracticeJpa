@@ -36,6 +36,8 @@ public class Question extends Persistence{
 
     private String hint;
 
+    private int totalOptions;
+
     private int serialNumber;
 
     public int getId() {
@@ -84,6 +86,14 @@ public class Question extends Persistence{
 
     public void setHint(String hint) {
         this.hint = hint;
+    }
+
+    public int getTotalOptions() {
+        return totalOptions;
+    }
+
+    public void setTotalOptions(int totalOptions) {
+        this.totalOptions = totalOptions;
     }
 
     public int getSerialNumber() {

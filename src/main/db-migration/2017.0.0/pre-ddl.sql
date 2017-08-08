@@ -144,6 +144,7 @@ CREATE TABLE question (
   exam_sub_category VARCHAR (100) NOT NULL,
   hint              VARCHAR (500),
   serial_number     INT (10),
+  total_options     INT (10),
 
   status            VARCHAR (50) NOT NULL,
   created_by_id     INT(10),

@@ -1,8 +1,10 @@
 package com.babar.framework.workflow;
 
 import com.babar.db.common.enums.FormStatus;
+import com.babar.db.entity.Question;
 import com.babar.framework.workflow.definition.InstitutionWorkflow;
 import com.babar.framework.workflow.definition.QuestionPaperWorkflow;
+import com.babar.framework.workflow.definition.QuestionWorkflow;
 import com.babar.security.Role;
 import com.babar.utils.Util;
 import com.babar.web.common.Action;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.babar.framework.workflow.FormType.FT_INSTITUTION;
+import static com.babar.framework.workflow.FormType.FT_QUESTION;
 import static com.babar.framework.workflow.FormType.FT_QUESTION_PAPER;
 
 /**
@@ -29,6 +32,7 @@ public class WorkflowManager {
     static {
         wfEngine.put(FT_QUESTION_PAPER, QuestionPaperWorkflow.getFlow());
         wfEngine.put(FT_INSTITUTION, InstitutionWorkflow.getFlow());
+        wfEngine.put(FT_QUESTION, QuestionWorkflow.getFlow());
     }
 
     public static FormStatus getNextStatus(FormType formType, FormStatus status, Action action) {

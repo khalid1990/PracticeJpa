@@ -25,6 +25,7 @@ import static com.babar.web.common.Action.*;
  */
 @Controller
 @RequestMapping("/question")
+@SessionAttributes(QuestionController.COMMAND_NAME)
 public class QuestionController {
 
     private static final String QUESTION_FORM = "question-form";
@@ -49,10 +50,10 @@ public class QuestionController {
     public String create(@RequestParam("qpId") int qpId, ModelMap modelMap) {
 
         QuestionPaper questionPaper = questionPaperService.find(qpId);
-        Question question = helper.createNewQuestion();
+        Question question = helper.createNewQuestion(questionPaper);
         helper.checkAccess(question, SAVE);
 
-        helper.populateModel(modelMap, question, questionPaper.getExamCategory(), ViewMode.EDITABLE, SAVE);
+        helper.populateModel(modelMap, question, ViewMode.EDITABLE);
 
         return QUESTION_FORM;
     }
@@ -63,9 +64,8 @@ public class QuestionController {
 
         Question question = questionService.find(id);
         helper.checkAccess(question, VIEW);
-        QuestionPaper questionPaper = question.getQuestionPaper();
 
-        helper.populateModel(modelMap, question, questionPaper.getExamCategory(), ViewMode.READ_ONLY, VIEW);
+        helper.populateModel(modelMap, question, ViewMode.READ_ONLY);
 
         return QUESTION_FORM;
     }
@@ -76,9 +76,8 @@ public class QuestionController {
 
         Question question = questionService.find(id);
         helper.checkAccess(question, UPDATE);
-        QuestionPaper questionPaper = question.getQuestionPaper();
 
-        helper.populateModel(modelMap, question, questionPaper.getExamCategory(), ViewMode.EDITABLE, UPDATE);
+        helper.populateModel(modelMap, question, ViewMode.EDITABLE);
 
         return QUESTION_FORM;
     }
@@ -93,6 +92,7 @@ public class QuestionController {
         if (bindingResult.hasErrors()) {
             return QUESTION_FORM;
         }
+        questionService.save(question);
 
         return "redirect:" + Forwards.COMMON_DONE;
     }
@@ -107,6 +107,22 @@ public class QuestionController {
         if (bindingResult.hasErrors()) {
             return QUESTION_FORM;
         }
+        questionService.update(question);
+
+        return "redirect:" + Forwards.COMMON_DONE;
+    }
+
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_submit")
+    public String submit(@ModelAttribute(COMMAND_NAME) @Valid QuestionCommand command,
+                          BindingResult bindingResult) {
+
+        Question question = command.getQuestion();
+        helper.checkAccess(question, SUBMIT);
+
+        if (bindingResult.hasErrors()) {
+            return QUESTION_FORM;
+        }
+        questionService.submit(question);
 
         return "redirect:" + Forwards.COMMON_DONE;
     }
@@ -121,22 +137,37 @@ public class QuestionController {
         if (bindingResult.hasErrors()) {
             return QUESTION_FORM;
         }
-
-        return "redirect:" + Forwards.COMMON_DONE;
-    }
-
-    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_delete")
-    public String delete(@ModelAttribute(COMMAND_NAME) QuestionCommand command) {
-        Question question = command.getQuestion();
-        helper.checkAccess(question, DELETE);
+        questionService.approve(question);
 
         return "redirect:" + Forwards.COMMON_DONE;
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_return")
-    public String returnToSubmitter(@ModelAttribute(COMMAND_NAME) QuestionCommand command) {
+    public String returnToSubmitter(@ModelAttribute(COMMAND_NAME) @Valid QuestionCommand command,
+                                    BindingResult bindingResult) {
         Question question = command.getQuestion();
         helper.checkAccess(question, RETURN);
+
+        if (bindingResult.hasErrors()) {
+            return QUESTION_FORM;
+        }
+
+        questionService.returnToSubmitter(question);
+
+        return "redirect:" + Forwards.COMMON_DONE;
+    }
+
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_delete")
+    public String delete(@ModelAttribute(COMMAND_NAME) @Valid QuestionCommand command,
+                         BindingResult bindingResult) {
+        Question question = command.getQuestion();
+        helper.checkAccess(question, DELETE);
+
+        if (bindingResult.hasErrors()) {
+            return QUESTION_FORM;
+        }
+
+        questionService.delete(question);
 
         return "redirect:" + Forwards.COMMON_DONE;
     }
