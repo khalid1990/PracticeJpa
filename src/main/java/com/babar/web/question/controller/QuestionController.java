@@ -6,6 +6,7 @@ import com.babar.web.common.Forwards;
 import com.babar.web.common.ViewMode;
 import com.babar.web.question.helper.QuestionHelper;
 import com.babar.web.question.model.QuestionCommand;
+import com.babar.web.question.service.QuestionOptionService;
 import com.babar.web.question.service.QuestionPaperService;
 import com.babar.web.question.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,9 @@ public class QuestionController {
 
     @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    private QuestionOptionService questionOptionService;
 
     @Autowired
     private QuestionPaperService questionPaperService;

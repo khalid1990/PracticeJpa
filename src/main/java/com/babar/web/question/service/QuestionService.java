@@ -2,9 +2,11 @@ package com.babar.web.question.service;
 
 import com.babar.db.common.enums.FormStatus;
 import com.babar.db.entity.Question;
+import com.babar.db.entity.QuestionOption;
 import com.babar.framework.workflow.FormType;
 import com.babar.framework.workflow.WorkflowManager;
 import com.babar.web.common.Action;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,9 @@ public class QuestionService {
     @PersistenceContext(unitName = "emf")
     private EntityManager em;
 
+    @Autowired
+    private QuestionOptionService questionOptionService;
+
     public Question find(int id) {
         return em.find(Question.class, id);
     }
@@ -34,6 +39,10 @@ public class QuestionService {
 
     @Transactional
     public Question update(Question question) {
+        for (QuestionOption option : question.getQuestionOptions()) {
+            option.setQuestion(question);
+        }
+
         return doSave(question, UPDATE);
     }
 

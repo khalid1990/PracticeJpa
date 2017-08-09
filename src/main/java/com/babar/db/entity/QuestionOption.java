@@ -62,4 +62,8 @@ public class QuestionOption {
     public void setCorrect(boolean correct) {
         this.correct = correct;
     }
+
+    public boolean isNew () {
+        return id == 0;
+    }
 }

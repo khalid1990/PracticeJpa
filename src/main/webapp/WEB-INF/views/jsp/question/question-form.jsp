@@ -1,3 +1,4 @@
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%--
 --@author babar
 --@since 22/4/2017
@@ -69,8 +70,26 @@
                                  bindPath="question.serialNumber"/>
                 </div>
 
+                <div class="row">
+                    <b:textField messageKey="question.total.options"
+                                 data="${question.totalOptions}"
+                                 readOnly="${readOnly}"
+                                 bindPath="question.totalOptions"/>
+                </div>
+
                 <c:if test="${not question.new}">
-                    insert options...
+                    <hr/>
+
+                    <h4><fmt:message key="label.options"/></h4>
+
+                    <c:forEach items="${question.questionOptions}" var="option" varStatus="loop">
+                        <div class="row">
+                            <b:textArea messageKey="label.option"
+                                        bindPath="question.questionOptions[${loop.index}].text"
+                                        readOnly="${readOnly}"
+                                        data="${option.text}"/>
+                        </div>
+                    </c:forEach>
                 </c:if>
             </jsp:attribute>
         </b:section>

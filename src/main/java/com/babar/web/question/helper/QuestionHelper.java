@@ -5,6 +5,7 @@ import com.babar.db.common.enums.ExamCategory;
 import com.babar.db.common.enums.ExamSubCategory;
 import com.babar.db.common.enums.FormStatus;
 import com.babar.db.entity.Question;
+import com.babar.db.entity.QuestionOption;
 import com.babar.db.entity.QuestionPaper;
 import com.babar.framework.workflow.FormType;
 import com.babar.framework.workflow.WorkflowManager;
@@ -15,6 +16,10 @@ import com.babar.web.question.controller.QuestionController;
 import com.babar.web.question.model.QuestionCommand;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author babar
@@ -45,7 +50,13 @@ public class QuestionHelper {
     private QuestionCommand createQuestionCommand(Question question, ViewMode viewMode) {
 
         QuestionCommand command = new QuestionCommand();
+
+        if (CollectionUtils.isEmpty(question.getQuestionOptions())) {
+            question.setQuestionOptions(Arrays.asList(new QuestionOption[question.getTotalOptions()]));
+        }
+
         command.setQuestion(question);
+
         ActionView actionView = WorkflowManager.getActionView(FormType.FT_QUESTION, question.getStatus(), viewMode, UserContext.getProfileRoles());
         command.setActionView(actionView);
 
