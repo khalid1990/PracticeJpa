@@ -2,8 +2,7 @@ package com.babar.web.question.controller;
 
 import com.babar.db.entity.Question;
 import com.babar.db.entity.QuestionPaper;
-import com.babar.web.common.Forwards;
-import com.babar.web.common.ViewMode;
+import com.babar.web.common.*;
 import com.babar.web.question.helper.QuestionHelper;
 import com.babar.web.question.model.QuestionCommand;
 import com.babar.web.question.service.QuestionOptionService;
@@ -11,11 +10,13 @@ import com.babar.web.question.service.QuestionPaperService;
 import com.babar.web.question.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import static com.babar.web.common.Action.*;
@@ -44,6 +45,9 @@ public class QuestionController {
 
     @Autowired
     private QuestionPaperService questionPaperService;
+
+    @Autowired
+    private MessageSourceAccessor msa;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -88,7 +92,8 @@ public class QuestionController {
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_save")
     public String save(@ModelAttribute(COMMAND_NAME) @Valid QuestionCommand command,
-                       BindingResult bindingResult) {
+                       BindingResult bindingResult,
+                       RedirectAttributes redirectAttributes) {
 
         Question question = command.getQuestion();
         helper.checkAccess(question, SAVE);
@@ -98,12 +103,22 @@ public class QuestionController {
         }
         questionService.save(question);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirectToCommon(redirectAttributes,
+                                        msa.getMessage("msg.save.successful",new String[] {"Question"}),
+                                        (new UrlGenerator(Url.QUESTION_SHOW)).
+                                                addParam("id", String.valueOf(question.getId())).getRawUrl());
     }
 
+    /*
+    * Note: Important lesson learned; when I was generating the url to which my request was being
+    * redirected, I accidentally used '//' in the path instead of '/'; (like : /qbank//question/show)
+    * which didn't have any visible effect on the request processing but there was a catch;
+    * my redirect flash attribute was not working and I almost wasted 2/3 hours behind this. :( .
+    * */
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_update")
     public String update(@ModelAttribute(COMMAND_NAME) @Valid QuestionCommand command,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) {
 
         Question question = command.getQuestion();
         helper.checkAccess(question, UPDATE);
@@ -113,12 +128,16 @@ public class QuestionController {
         }
         questionService.update(question);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirect(redirectAttributes,
+                                        msa.getMessage("msg.update.successful", new String[] {"Question"}),
+                                        (new UrlGenerator(Url.QUESTION_SHOW)).
+                                                addParam("id", String.valueOf(question.getId())).getRawUrl());
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_submit")
     public String submit(@ModelAttribute(COMMAND_NAME) @Valid QuestionCommand command,
-                          BindingResult bindingResult) {
+                          BindingResult bindingResult,
+                          RedirectAttributes redirectAttributes) {
 
         Question question = command.getQuestion();
         helper.checkAccess(question, SUBMIT);
@@ -128,12 +147,16 @@ public class QuestionController {
         }
         questionService.submit(question);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirect(redirectAttributes,
+                msa.getMessage("msg.submit.successful", new String[] {"Question"}),
+                (new UrlGenerator(Url.QUESTION_SHOW)).
+                        addParam("id", String.valueOf(question.getId())).getRawUrl());
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_approve")
     public String approve(@ModelAttribute(COMMAND_NAME) @Valid QuestionCommand command,
-                          BindingResult bindingResult) {
+                          BindingResult bindingResult,
+                          RedirectAttributes redirectAttributes) {
 
         Question question = command.getQuestion();
         helper.checkAccess(question, APPROVE);
@@ -143,12 +166,15 @@ public class QuestionController {
         }
         questionService.approve(question);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirect(redirectAttributes,
+                msa.getMessage("msg.approve.successful", new String[] {"Question"}),
+                (new UrlGenerator(Url.QUESTION_SHOW)).
+                        addParam("id", String.valueOf(question.getId())).getRawUrl());
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_return")
     public String returnToSubmitter(@ModelAttribute(COMMAND_NAME) @Valid QuestionCommand command,
-                                    BindingResult bindingResult) {
+                                    BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         Question question = command.getQuestion();
         helper.checkAccess(question, RETURN);
 
@@ -158,12 +184,16 @@ public class QuestionController {
 
         questionService.returnToSubmitter(question);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirect(redirectAttributes,
+                msa.getMessage("msg.return.successful", new String[] {"Question"}),
+                (new UrlGenerator(Url.QUESTION_SHOW)).
+                        addParam("id", String.valueOf(question.getId())).getRawUrl());
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_delete")
     public String delete(@ModelAttribute(COMMAND_NAME) @Valid QuestionCommand command,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) {
         Question question = command.getQuestion();
         helper.checkAccess(question, DELETE);
 
@@ -173,6 +203,9 @@ public class QuestionController {
 
         questionService.delete(question);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirect(redirectAttributes,
+                msa.getMessage("msg.delete.successful", new String[] {"Question"}),
+                (new UrlGenerator(Url.QUESTION_SHOW)).
+                        addParam("id", String.valueOf(question.getId())).getRawUrl());
     }
 }
