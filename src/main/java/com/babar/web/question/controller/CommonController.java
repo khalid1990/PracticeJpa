@@ -3,10 +3,7 @@ package com.babar.web.question.controller;
 import com.babar.web.common.DoneBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author babar
@@ -23,4 +20,9 @@ public class CommonController {
         return COMMON_DONE_PAGE;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
+    public String home() {
+        return "Dashboard";
+    }
 }

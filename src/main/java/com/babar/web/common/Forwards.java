@@ -7,4 +7,6 @@ package com.babar.web.common;
 public interface Forwards {
 
     String COMMON_DONE = "/qbank/common/done"; // TODO: get rid of qbank if possible
+
+    String DASHBOARD_URL = "/qbank/common/dashboard";
 }

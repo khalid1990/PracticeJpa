@@ -102,7 +102,7 @@
 
         <b:buttonSection leftSectionSize="3">
             <jsp:attribute name="left">
-                <b:button name="_action_back" value="label.back"/>
+                <b:button name="${not readOnly and not question.new ? '_action_back_show' : '_action_back'}" value="label.back"/>
                 <b:button name="_action_cancel" value="label.cancel"/>
             </jsp:attribute>
 

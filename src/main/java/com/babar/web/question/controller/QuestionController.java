@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
@@ -128,10 +129,10 @@ public class QuestionController {
         }
         questionService.update(question);
 
-        return ControllerUtils.redirect(redirectAttributes,
-                                        msa.getMessage("msg.update.successful", new String[] {"Question"}),
-                                        (new UrlGenerator(Url.QUESTION_SHOW)).
-                                                addParam("id", String.valueOf(question.getId())).getRawUrl());
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                msa.getMessage("msg.update.successful", new String[]{"Question"}),
+                (new UrlGenerator(Url.QUESTION_SHOW)).
+                        addParam("id", String.valueOf(question.getId())).getRawUrl());
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_submit")
@@ -147,8 +148,8 @@ public class QuestionController {
         }
         questionService.submit(question);
 
-        return ControllerUtils.redirect(redirectAttributes,
-                msa.getMessage("msg.submit.successful", new String[] {"Question"}),
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                msa.getMessage("msg.submit.successful", new String[]{"Question"}),
                 (new UrlGenerator(Url.QUESTION_SHOW)).
                         addParam("id", String.valueOf(question.getId())).getRawUrl());
     }
@@ -166,8 +167,8 @@ public class QuestionController {
         }
         questionService.approve(question);
 
-        return ControllerUtils.redirect(redirectAttributes,
-                msa.getMessage("msg.approve.successful", new String[] {"Question"}),
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                msa.getMessage("msg.approve.successful", new String[]{"Question"}),
                 (new UrlGenerator(Url.QUESTION_SHOW)).
                         addParam("id", String.valueOf(question.getId())).getRawUrl());
     }
@@ -184,8 +185,8 @@ public class QuestionController {
 
         questionService.returnToSubmitter(question);
 
-        return ControllerUtils.redirect(redirectAttributes,
-                msa.getMessage("msg.return.successful", new String[] {"Question"}),
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                msa.getMessage("msg.return.successful", new String[]{"Question"}),
                 (new UrlGenerator(Url.QUESTION_SHOW)).
                         addParam("id", String.valueOf(question.getId())).getRawUrl());
     }
@@ -203,9 +204,29 @@ public class QuestionController {
 
         questionService.delete(question);
 
-        return ControllerUtils.redirect(redirectAttributes,
-                msa.getMessage("msg.delete.successful", new String[] {"Question"}),
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                msa.getMessage("msg.delete.successful", new String[]{"Question"}),
                 (new UrlGenerator(Url.QUESTION_SHOW)).
                         addParam("id", String.valueOf(question.getId())).getRawUrl());
+    }
+
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_back")
+    public String back(@ModelAttribute(COMMAND_NAME) QuestionCommand command,
+                       SessionStatus sessionStatus) {
+        sessionStatus.setComplete();
+        return ControllerUtils.redirect(command.getBackLink());
+    }
+
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_back_show")
+    public String backToShow(@ModelAttribute(COMMAND_NAME) QuestionCommand command,
+                             SessionStatus sessionStatus) {
+        sessionStatus.setComplete();
+        return ControllerUtils.redirect(helper.getShowPageUrl(command.getQuestion().getId(), command.getBackLink()));
+    }
+
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_cancel")
+    public String cancel(SessionStatus sessionStatus) {
+        sessionStatus.setComplete();
+        return ControllerUtils.redirectToDashboard();
     }
 }
