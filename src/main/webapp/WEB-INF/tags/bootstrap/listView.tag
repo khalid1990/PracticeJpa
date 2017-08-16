@@ -13,6 +13,7 @@
 <%@attribute name="sortProperty" type="java.lang.String" %>
 <%@attribute name="sortOrder" type="java.lang.String" %>
 <%@attribute name="noResultFound" type="java.lang.Boolean" %>
+<%@attribute name="currentUrl" type="java.lang.String" %>
 
 <c:set var="disabledPrevious" value="${currentIndex == 0 ? 'disabled' : ''}"/>
 <c:set var="disabledNext" value="${disableNextButton ? 'disabled' : ''}"/>
@@ -103,6 +104,7 @@
                                                 <c:when test="${loop.index == 0}">
                                                     <c:url var="loadUrl" value="${recordLoaderUrl}">
                                                         <c:param name="id" value="${record['id']}"/>
+                                                        <c:param name="backLink" value="${currentUrl}"/>
                                                     </c:url>
 
                                                     <a href="${loadUrl}">

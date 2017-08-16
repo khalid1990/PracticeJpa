@@ -19,6 +19,7 @@
                          recordLoaderUrl="${recordLoaderUrl}"
                          sortProperty="${sortProperty}"
                          sortOrder="${sortOrder}"
+                         currentUrl="${currentUrl}"
                          listUrl="${listUrl}"/>
 </body>
 </html>

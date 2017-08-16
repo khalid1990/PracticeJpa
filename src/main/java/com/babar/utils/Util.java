@@ -35,7 +35,8 @@ public class Util {
 
     public static String getCurrentUrl() {
         HttpServletRequest request = getRequest();
-        return request.getRequestURI() + "?" + request.getQueryString();
+        return request.getServletPath() + request.getPathInfo() +
+                (StringUtils.isEmpty(request.getQueryString()) ? "" : "?" + request.getQueryString());
     }
 
     private static HttpServletRequest getRequest() {

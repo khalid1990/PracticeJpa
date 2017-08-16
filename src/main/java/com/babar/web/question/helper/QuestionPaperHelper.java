@@ -6,9 +6,8 @@ import com.babar.db.entity.QuestionPaper;
 import com.babar.framework.workflow.FormType;
 import com.babar.framework.workflow.WorkflowManager;
 import com.babar.utils.StringUtils;
-import com.babar.web.common.Action;
-import com.babar.web.common.ActionView;
-import com.babar.web.common.ViewMode;
+import com.babar.utils.Util;
+import com.babar.web.common.*;
 import com.babar.web.question.controller.QuestionPaperController;
 import com.babar.web.question.model.QuestionPaperCommand;
 import com.babar.web.question.service.InstitutionService;
@@ -64,6 +63,7 @@ public class QuestionPaperHelper {
         modelMap.put("recordLoaderUrl", "/qbank/questionPaper/show");
         modelMap.put("sortOrder", sortOrder);
         modelMap.put("sortProperty", sortProperty);
+        modelMap.put("currentUrl", Util.getCurrentUrl());
 
         int startIndex = currentIndex * RECORDS_PER_PAGE;
         List<QuestionPaper> records = questionPaperService.getSortedQuestionPapers(sortProperty, sortOrder, startIndex, RECORDS_PER_PAGE);
@@ -94,11 +94,14 @@ public class QuestionPaperHelper {
         command.setQuestionPaper(questionPaper);
         ActionView actionView = WorkflowManager.getActionView(FormType.FT_QUESTION_PAPER, questionPaper.getStatus(), viewMode, UserContext.getProfileRoles());
         command.setActionView(actionView);
+        command.setBackLink(Util.getBackLink());
 
         return command;
     }
 
-    private String getBackLink() {
-        return "";
+    public String getShowPageUrl(int id, String backLink) {
+        UrlGenerator ug = new UrlGenerator(Url.QUESTION_PAPER_SHOW);
+        return ug.addParam("id", String.valueOf(id))
+                 .addParam("backLink", backLink).getRawUrl();
     }
 }

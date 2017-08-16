@@ -136,7 +136,7 @@
 
         <b:buttonSection leftSectionSize="3">
             <jsp:attribute name="left">
-                <b:button name="_action_back" value="label.back"/>
+                <b:button name="${!readOnly and not qp.new ? '_action_back_show' : '_action_back'}" value="label.back"/>
                 <b:button name="_action_cancel" value="label.cancel"/>
             </jsp:attribute>
 
@@ -146,6 +146,7 @@
                         <c:if test="${av.canUpdate}">
                             <c:url var="editUrl" value="/qbank/questionPaper/edit">
                                 <c:param name="id" value="${qp.id}"/>
+                                <c:param name="backLink" value="${command.backLink}"/>
                             </c:url>
 
                             <b:button name="editUrl"

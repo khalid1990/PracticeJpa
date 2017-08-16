@@ -3,6 +3,7 @@ package com.babar.web.question.controller;
 import com.babar.db.common.editors.InstitutionEditor;
 import com.babar.db.entity.Institution;
 import com.babar.db.entity.QuestionPaper;
+import com.babar.web.common.ControllerUtils;
 import com.babar.web.common.Forwards;
 import com.babar.web.question.helper.QuestionPaperHelper;
 import com.babar.web.question.model.QuestionPaperCommand;
@@ -12,20 +13,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.support.AbstractMultipartHttpServletRequest;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.validation.Valid;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.babar.web.common.ViewMode.*;
 import static com.babar.web.common.Action.*;
+import static com.babar.web.common.ViewMode.EDITABLE;
+import static com.babar.web.common.ViewMode.READ_ONLY;
 
 /**
  * @author babar
@@ -151,7 +151,7 @@ public class QuestionPaperController {
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_approve")
-    public String approve(@ModelAttribute(COMMAND_NAME) @Valid QuestionPaperCommand  command,
+    public String approve(@ModelAttribute(COMMAND_NAME) @Valid QuestionPaperCommand command,
                           BindingResult bindingResult) {
         QuestionPaper questionPaper = command.getQuestionPaper();
 
@@ -185,5 +185,25 @@ public class QuestionPaperController {
         questionPaperService.returnToSubmitter(questionPaper);
 
         return "redirect:" + Forwards.COMMON_DONE;
+    }
+
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_back")
+    public String back(@ModelAttribute(COMMAND_NAME) QuestionPaperCommand command,
+                       SessionStatus sessionStatus) {
+        sessionStatus.setComplete();
+        return ControllerUtils.redirect(command.getBackLink());
+    }
+
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_back_show")
+    public String backToShow(@ModelAttribute(COMMAND_NAME) QuestionPaperCommand command,
+                             SessionStatus sessionStatus) {
+        sessionStatus.setComplete();
+        return ControllerUtils.redirect(helper.getShowPageUrl(command.getQuestionPaper().getId(), command.getBackLink()));
+    }
+
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_cancel")
+    public String cancel(SessionStatus sessionStatus) {
+        sessionStatus.setComplete();
+        return ControllerUtils.redirectToDashboard();
     }
 }
