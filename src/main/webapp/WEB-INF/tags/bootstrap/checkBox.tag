@@ -11,18 +11,21 @@
 <%@attribute name="required" type="java.lang.Boolean" %>
 
 <c:set var="disableCheckbox" value="${disabled or readOnly}"/>
-<c:set var="labelValue">
-    <fmt:message key="${messageKey}"/>
-    <c:if test="${required}">
-        <span style="color: red">*</span>
-    </c:if>
-</c:set>
-<div class="form-group">
-    <form:checkbox path="${bindPath}"
-                   label="${labelValue}"
-                   disabled="${disabled}"
-                   cssClass="form-control"
-                   id="${id}"/>
 
-    <form:errors path="${bindPath}"/>
+<div class="form-group col-sm-${labelSize}">
+    <label for="${bindPath}">
+        <fmt:message key="${messageKey}"/>
+        <c:if test="${required}">
+            <span style="color: red">*</span>
+        </c:if>
+
+        <form:checkbox path="${bindPath}"
+                       disabled="${disabled}"
+                       id="${id}"/>
+
+        <form:errors path="${bindPath}"/>
+    </label>
 </div>
+
+
+

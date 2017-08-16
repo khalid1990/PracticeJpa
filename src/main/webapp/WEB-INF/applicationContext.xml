@@ -15,6 +15,10 @@
             <property name="basename" value="ApplicationResources"/>
         </bean>
 
+        <bean id="msa" class="org.springframework.context.support.MessageSourceAccessor"> <!--to get the msa autowired in the controllers-->
+            <constructor-arg ref="messageSource"/>
+        </bean>
+
         <mvc:resources mapping="/resources/**" location="/resources/"/>
 
         <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"/>

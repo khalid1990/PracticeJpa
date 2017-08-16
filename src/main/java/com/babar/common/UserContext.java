@@ -26,7 +26,14 @@ public class UserContext {
                 QUESTION_PAPER_SUBMIT,
                 QUESTION_PAPER_APPROVE,
                 QUESTION_PAPER_RETURN,
-                QUESTION_PAPER_DELETE
-                );
+                QUESTION_PAPER_DELETE,
+
+                QUESTION_CREATE,
+                QUESTION_UPDATE,
+                QUESTION_SUBMIT,
+                QUESTION_APPROVE,
+                QUESTION_RETURN,
+                QUESTION_DELETE
+            );
     }
 }

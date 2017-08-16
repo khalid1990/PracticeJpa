@@ -7,7 +7,7 @@ import javax.persistence.*;
  * @since 3/12/17.
  */
 @Entity
-public class QuestionOption extends Persistence{
+public class QuestionOption {
 
     @Id
     @GeneratedValue
@@ -61,5 +61,9 @@ public class QuestionOption extends Persistence{
 
     public void setCorrect(boolean correct) {
         this.correct = correct;
+    }
+
+    public boolean isNew () {
+        return id == 0;
     }
 }
