@@ -24,4 +24,8 @@ public class StringUtils {
 
         return isEmpty(base) || isEmpty(comparing) ? false : base.toLowerCase().contains(comparing.toLowerCase());
     }
+
+    public static boolean isNotEmpty(String s) {
+        return !isEmpty(s);
+    }
 }

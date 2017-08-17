@@ -116,23 +116,41 @@
 
         <b:buttonSection leftSectionSize="4">
             <jsp:attribute name="left">
-                <b:button name="_action_back" value="label.back"/>
+                <b:button name="${not readOnly and not user.new ? '_action_back_show' : '_action_back'}" value="label.back"/>
 
                 <b:button name="_action_cancel" value="label.cancel"/>
             </jsp:attribute>
             
             <jsp:attribute name="right">
-                <b:button name="_action_save"
-                          value="label.save"
-                          visible="${command.av.canSave}"/>
+                <c:choose>
+                    <c:when test="${readOnly}">
+                        <c:if test="${command.av.canUpdate}">
+                            <c:url var="editUrl" value="/qbank/user/edit">
+                                <c:param name="id" value="${user.id}"/>
+                                <c:param name="backLink" value="${command.backLink}"/>
+                            </c:url>
 
-                <b:button name="_action_update"
-                          value="label.update"
-                          visible="${command.av.canUpdate}"/>
+                            <b:button name="editUrl"
+                                      value="label.edit"
+                                      type="button"
+                                      onClick="window.location='${editUrl}'"/>
+                        </c:if>
 
-                <b:button name="_action_delete"
-                          value="label.delete"
-                          visible="${command.av.canDelete}"/>
+                        <b:button name="_action_delete"
+                                  value="label.delete"
+                                  visible="${command.av.canDelete}"/>
+                    </c:when>
+
+                    <c:otherwise>
+                        <b:button name="_action_save"
+                                  value="label.save"
+                                  visible="${command.av.canSave}"/>
+
+                        <b:button name="_action_update"
+                                  value="label.update"
+                                  visible="${command.av.canUpdate}"/>
+                    </c:otherwise>
+                </c:choose>
             </jsp:attribute>
         </b:buttonSection>
     </form:form>

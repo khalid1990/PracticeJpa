@@ -2,18 +2,20 @@ package com.babar.web.user.controller;
 
 import com.babar.db.entity.User;
 import com.babar.utils.StringUtils;
-import com.babar.web.common.Forwards;
-import com.babar.web.common.ViewMode;
+import com.babar.web.common.*;
 import com.babar.web.user.helper.UserHelper;
 import com.babar.web.user.model.UserCommand;
 import com.babar.web.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -40,6 +42,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private MessageSourceAccessor msa;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
@@ -62,7 +67,7 @@ public class UserController {
         User user = userService.find(id);
 
         helper.checkAccess(user, VIEW);
-        helper.populateModel(user, modelMap, ViewMode.READ_ONLY, VIEW, DELETE);
+        helper.populateModel(user, modelMap, ViewMode.READ_ONLY, UPDATE, DELETE);
 
         return USER_FORM;
     }
@@ -91,7 +96,8 @@ public class UserController {
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_update_password")
     public String changePassword(@ModelAttribute(COMMAND_NAME) @Valid UserCommand command,
-                                 BindingResult bindingResult) {
+                                 BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes) {
         User user = command.getUser();
         helper.checkAccess(user, UPDATE);
 
@@ -100,12 +106,15 @@ public class UserController {
         }
         userService.update(user);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                msa.getMessage("msg.pwd.update.successful", new String[]{"User"}),
+                helper.getShowPageUrl(user.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_save")
     public String save(@ModelAttribute(COMMAND_NAME) @Valid UserCommand command,
-                       BindingResult bindingResult) {
+                       BindingResult bindingResult,
+                       RedirectAttributes redirectAttributes) {
 
         User user = command.getUser();
         helper.checkAccess(user, SAVE);
@@ -115,12 +124,15 @@ public class UserController {
         }
         userService.save(user);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirectToCommon(redirectAttributes,
+                                    msa.getMessage("msg.save.successful", new String[]{"User"}),
+                                    helper.getShowPageUrl(user.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_update")
     public String update(@ModelAttribute(COMMAND_NAME) @Valid UserCommand command,
-                       BindingResult bindingResult) {
+                       BindingResult bindingResult,
+                       RedirectAttributes redirectAttributes) {
 
         User user = command.getUser();
         helper.checkAccess(user, UPDATE);
@@ -130,26 +142,39 @@ public class UserController {
         }
         userService.update(user);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                                msa.getMessage("msg.update.successful", new String[]{"User"}),
+                                helper.getShowPageUrl(user.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_delete")
-    public String delete(@ModelAttribute(COMMAND_NAME) UserCommand command) {
+    public String delete(@ModelAttribute(COMMAND_NAME) UserCommand command,
+                         RedirectAttributes redirectAttributes) {
 
         User user = command.getUser();
         helper.checkAccess(user, DELETE);
         userService.delete(user);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                msa.getMessage("msg.delete.successful", new String[]{"User"}),
+                helper.getShowPageUrl(user.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_back")
-    public String back() {
-        return "redirect:" + Forwards.COMMON_DONE;
+    public String back(@ModelAttribute(COMMAND_NAME) UserCommand command, SessionStatus sessionStatus) {
+        sessionStatus.setComplete();
+        return ControllerUtils.redirect(command.getBackLink());
+    }
+
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_back_show")
+    public String backToShow(@ModelAttribute(COMMAND_NAME) UserCommand command, SessionStatus sessionStatus) {
+        sessionStatus.setComplete();
+        return ControllerUtils.redirect(helper.getShowPageUrl(command.getUser().getId(), command.getBackLink()));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_cancel")
-    public String cancel() {
-        return "redirect:" + Forwards.COMMON_DONE;
+    public String cancel(SessionStatus sessionStatus) {
+        sessionStatus.setComplete();
+        return ControllerUtils.redirectToDashboard();
     }
 }
