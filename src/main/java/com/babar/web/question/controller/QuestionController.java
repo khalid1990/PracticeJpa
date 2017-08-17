@@ -106,8 +106,7 @@ public class QuestionController {
 
         return ControllerUtils.redirectToCommon(redirectAttributes,
                                         msa.getMessage("msg.save.successful",new String[] {"Question"}),
-                                        (new UrlGenerator(Url.QUESTION_SHOW)).
-                                                addParam("id", String.valueOf(question.getId())).getRawUrl());
+                                        helper.getShowPageUrl(question.getId(), null));
     }
 
     /*
@@ -131,8 +130,7 @@ public class QuestionController {
 
         return ControllerUtils.redirectWithMessage(redirectAttributes,
                 msa.getMessage("msg.update.successful", new String[]{"Question"}),
-                (new UrlGenerator(Url.QUESTION_SHOW)).
-                        addParam("id", String.valueOf(question.getId())).getRawUrl());
+                helper.getShowPageUrl(question.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_submit")
@@ -150,8 +148,7 @@ public class QuestionController {
 
         return ControllerUtils.redirectWithMessage(redirectAttributes,
                 msa.getMessage("msg.submit.successful", new String[]{"Question"}),
-                (new UrlGenerator(Url.QUESTION_SHOW)).
-                        addParam("id", String.valueOf(question.getId())).getRawUrl());
+                helper.getShowPageUrl(question.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_approve")
@@ -169,8 +166,7 @@ public class QuestionController {
 
         return ControllerUtils.redirectWithMessage(redirectAttributes,
                 msa.getMessage("msg.approve.successful", new String[]{"Question"}),
-                (new UrlGenerator(Url.QUESTION_SHOW)).
-                        addParam("id", String.valueOf(question.getId())).getRawUrl());
+                helper.getShowPageUrl(question.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_return")
@@ -187,8 +183,7 @@ public class QuestionController {
 
         return ControllerUtils.redirectWithMessage(redirectAttributes,
                 msa.getMessage("msg.return.successful", new String[]{"Question"}),
-                (new UrlGenerator(Url.QUESTION_SHOW)).
-                        addParam("id", String.valueOf(question.getId())).getRawUrl());
+                helper.getShowPageUrl(question.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_delete")
@@ -206,8 +201,7 @@ public class QuestionController {
 
         return ControllerUtils.redirectWithMessage(redirectAttributes,
                 msa.getMessage("msg.delete.successful", new String[]{"Question"}),
-                (new UrlGenerator(Url.QUESTION_SHOW)).
-                        addParam("id", String.valueOf(question.getId())).getRawUrl());
+                helper.getShowPageUrl(question.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_back")

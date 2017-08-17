@@ -12,12 +12,14 @@ import com.babar.web.question.service.QuestionPaperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
@@ -50,6 +52,9 @@ public class QuestionPaperController {
 
     @Autowired
     private InstitutionService institutionService;
+
+    @Autowired
+    private MessageSourceAccessor msa;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -112,7 +117,7 @@ public class QuestionPaperController {
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_save")
     public String save(@ModelAttribute(COMMAND_NAME) @Valid QuestionPaperCommand command,
                        BindingResult bindingResult,
-                       ModelMap modelMap) {
+                       RedirectAttributes redirectAttributes) {
 
         QuestionPaper questionPaper = command.getQuestionPaper();
         if (bindingResult.hasErrors()) {
@@ -120,13 +125,15 @@ public class QuestionPaperController {
         }
         questionPaperService.save(questionPaper);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirectToCommon(redirectAttributes,
+                                    msa.getMessage("msg.save.successful", new String[]{"Question Paper"}),
+                                    helper.getShowPageUrl(questionPaper.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_update")
     public String update(@ModelAttribute(COMMAND_NAME) @Valid QuestionPaperCommand command,
                          BindingResult bindingResult,
-                         ModelMap modelMap) {
+                         RedirectAttributes redirectAttributes) {
 
         QuestionPaper questionPaper = command.getQuestionPaper();
         if (bindingResult.hasErrors()) {
@@ -134,12 +141,15 @@ public class QuestionPaperController {
         }
         questionPaperService.update(questionPaper);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                                    msa.getMessage("msg.update.successful", new String[]{"Question Paper"}),
+                                    helper.getShowPageUrl(questionPaper.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_submit")
     public String submit(@ModelAttribute(COMMAND_NAME) @Valid QuestionPaperCommand command,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) {
 
         QuestionPaper questionPaper = command.getQuestionPaper();
         if (bindingResult.hasErrors()) {
@@ -147,12 +157,15 @@ public class QuestionPaperController {
         }
         questionPaperService.submit(questionPaper);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                msa.getMessage("msg.submit.successful", new String[]{"Question Paper"}),
+                helper.getShowPageUrl(questionPaper.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_approve")
     public String approve(@ModelAttribute(COMMAND_NAME) @Valid QuestionPaperCommand command,
-                          BindingResult bindingResult) {
+                          BindingResult bindingResult,
+                          RedirectAttributes redirectAttributes) {
         QuestionPaper questionPaper = command.getQuestionPaper();
 
         if (bindingResult.hasErrors()) {
@@ -160,31 +173,39 @@ public class QuestionPaperController {
         }
         questionPaperService.approve(questionPaper);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                    msa.getMessage("msg.approve.successful", new String[]{"Question Paper"}),
+                    helper.getShowPageUrl(questionPaper.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_delete")
     public String delete(@ModelAttribute(COMMAND_NAME) @Valid QuestionPaperCommand command,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) {
         QuestionPaper questionPaper = command.getQuestionPaper();
         if (bindingResult.hasErrors()) {
             return QP_FORM;
         }
         questionPaperService.delete(questionPaper);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                                    msa.getMessage("msg.delete.successful", new String[]{"Question Paper"}),
+                                    helper.getShowPageUrl(questionPaper.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_return")
     public String returnToSubmitter(@ModelAttribute(COMMAND_NAME) QuestionPaperCommand command,
-                                    BindingResult bindingResult) {
+                                    BindingResult bindingResult,
+                                    RedirectAttributes redirectAttributes) {
         QuestionPaper questionPaper = command.getQuestionPaper();
         if (bindingResult.hasErrors()) {
             return QP_FORM;
         }
         questionPaperService.returnToSubmitter(questionPaper);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                                    msa.getMessage("msg.return.successful", new String[]{"Question Paper"}),
+                                    helper.getShowPageUrl(questionPaper.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_back")

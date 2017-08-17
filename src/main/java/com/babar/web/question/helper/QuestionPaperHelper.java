@@ -101,7 +101,12 @@ public class QuestionPaperHelper {
 
     public String getShowPageUrl(int id, String backLink) {
         UrlGenerator ug = new UrlGenerator(Url.QUESTION_PAPER_SHOW);
-        return ug.addParam("id", String.valueOf(id))
-                 .addParam("backLink", backLink).getRawUrl();
+        ug.addParam("id", String.valueOf(id));
+
+        if (StringUtils.isNotEmpty(backLink)) {
+            ug.addParam("backLink", backLink);
+        }
+
+        return ug.getRawUrl();
     }
 }

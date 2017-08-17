@@ -10,6 +10,13 @@
     <title><fmt:message key="label.user"/></title>
 </head>
 <body>
+
+    <c:if test="${!empty FLASH_MESSAGE}">
+        <div class="alert alert-success alert-dismissable">
+            <c:out value="${FLASH_MESSAGE}"/>
+        </div>
+    </c:if>
+
     <b:formHeader titleKey="label.user" status=""/>
 
     <c:set var="user" value="${command.user}"/>

@@ -20,6 +20,12 @@
     <c:set var="av" value="${command.actionView}"/>
     <c:set var="readOnly" value="${av.readOnly}"/>
 
+    <c:if test="${!empty FLASH_MESSAGE}">
+        <div class="alert alert-success alert-dismissable">
+            <c:out value="${FLASH_MESSAGE}"/>
+        </div>
+    </c:if>
+
     <b:formHeader titleKey="label.question.paper"
                   status="${qp.status}"
                   createdBy="${qp.createdBy.displayName}"
