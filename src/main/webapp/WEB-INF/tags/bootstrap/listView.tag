@@ -146,3 +146,16 @@
         </nav>
     </jsp:attribute>
 </b:section>
+
+<div class="alert alert-info">
+    <div class="row">
+        <div class="col-sm-2" style="text-align: left">
+
+            <c:url var="dashboardUrl" value="/qbank/common/dashboard"/>
+            <b:button name="backToDashboard"
+                      value="label.back"
+                      onClick="window.location='${dashboardUrl}'"/>
+
+        </div>
+    </div>
+</div>

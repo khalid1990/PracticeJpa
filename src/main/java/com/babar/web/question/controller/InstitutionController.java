@@ -1,6 +1,7 @@
 package com.babar.web.question.controller;
 
 import com.babar.db.entity.Institution;
+import com.babar.web.common.ControllerUtils;
 import com.babar.web.common.Forwards;
 import com.babar.web.common.ViewMode;
 import com.babar.web.question.helper.InstitutionHelper;
@@ -8,6 +9,7 @@ import com.babar.web.question.model.InstitutionCommand;
 import com.babar.web.question.service.InstitutionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -49,6 +52,8 @@ public class InstitutionController {
 
     private static final String INST_FORM = "inst-form";
 
+    private static final String LIST_VIEW = "instListView";
+
     public static final String COMMAND_NAME = "command";
 
     @Autowired
@@ -56,6 +61,9 @@ public class InstitutionController {
 
     @Autowired
     private InstitutionService institutionService;
+
+    @Autowired
+    private MessageSourceAccessor msa;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -98,9 +106,20 @@ public class InstitutionController {
         return INST_FORM;
     }
 
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String list(@RequestParam(value = "currentIndex", required = false, defaultValue = "0") int currentIndex,
+                       @RequestParam(value = "sortProperty", required = false) String sortProperty,
+                       @RequestParam(value = "sortOrder", required = false) String sortOrder,
+                       ModelMap modelMap) {
+        helper.populateModelWithListTableInfo(currentIndex, sortOrder, sortProperty, modelMap);
+
+        return LIST_VIEW;
+    }
+
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_save")
     public String save(@ModelAttribute(COMMAND_NAME) @Valid InstitutionCommand command,
-                       BindingResult bindingResult) {
+                       BindingResult bindingResult,
+                       RedirectAttributes redirectAttributes) {
 
         Institution institution = command.getInstitution();
         helper.checkAccess(institution, SAVE);
@@ -110,12 +129,15 @@ public class InstitutionController {
         }
         institutionService.save(institution);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirectToCommon(redirectAttributes,
+                msa.getMessage("msg.save.successful", new String[]{"Institution"}),
+                helper.getShowUrl(institution.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_update")
     public String update(@ModelAttribute(COMMAND_NAME) @Valid InstitutionCommand command,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) {
         Institution institution = command.getInstitution();
         helper.checkAccess(institution, UPDATE);
 
@@ -124,12 +146,15 @@ public class InstitutionController {
         }
         institutionService.update(institution);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                msa.getMessage("msg.update.successful", new String[]{"Institution"}),
+                helper.getShowUrl(institution.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_submit")
     public String submit(@ModelAttribute(COMMAND_NAME) @Valid InstitutionCommand command,
-                         BindingResult bindingResult) {
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) {
         Institution institution = command.getInstitution();
         helper.checkAccess(institution, SUBMIT);
 
@@ -138,12 +163,15 @@ public class InstitutionController {
         }
         institutionService.submit(institution);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                msa.getMessage("msg.submit.successful", new String[]{"Institution"}),
+                helper.getShowUrl(institution.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_approve")
     public String approve(@ModelAttribute(COMMAND_NAME) InstitutionCommand command,
-                          BindingResult bindingResult) {
+                          BindingResult bindingResult,
+                          RedirectAttributes redirectAttributes) {
 
         Institution institution = command.getInstitution();
         helper.checkAccess(institution, APPROVE);
@@ -153,26 +181,54 @@ public class InstitutionController {
         }
         institutionService.approve(institution);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                msa.getMessage("msg.approve.successful", new String[]{"Institution"}),
+                helper.getShowUrl(institution.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_delete")
-    public String delete(@ModelAttribute(COMMAND_NAME) InstitutionCommand command) {
+    public String delete(@ModelAttribute(COMMAND_NAME) InstitutionCommand command,
+                         RedirectAttributes redirectAttributes) {
 
         Institution institution = command.getInstitution();
         helper.checkAccess(institution, DELETE);
         institutionService.delete(institution);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                msa.getMessage("msg.delete.successful", new String[]{"Institution"}),
+                helper.getShowUrl(institution.getId(), null));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_return")
-    public String returnToSubmitter(@ModelAttribute(COMMAND_NAME) InstitutionCommand command) {
+    public String returnToSubmitter(@ModelAttribute(COMMAND_NAME) InstitutionCommand command,
+                                    RedirectAttributes redirectAttributes) {
 
         Institution institution = command.getInstitution();
         helper.checkAccess(institution, RETURN);
         institutionService.returnToSubmitter(institution);
 
-        return "redirect:" + Forwards.COMMON_DONE;
+        return ControllerUtils.redirectWithMessage(redirectAttributes,
+                msa.getMessage("msg.return.successful", new String[]{"Institution"}),
+                helper.getShowUrl(institution.getId(), null));
+    }
+
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_back")
+    public String back(@ModelAttribute(COMMAND_NAME) InstitutionCommand command,
+                       SessionStatus sessionStatus) {
+        sessionStatus.setComplete();
+        return ControllerUtils.redirect(command.getBackLink());
+    }
+
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_back_show")
+    public String backToShow(@ModelAttribute(COMMAND_NAME) InstitutionCommand command,
+                       SessionStatus sessionStatus) {
+        sessionStatus.setComplete();
+        return ControllerUtils.redirect(helper.getShowUrl(command.getInstitution().getId(), command.getBackLink()));
+    }
+
+    @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_cancel")
+    public String cancel(SessionStatus sessionStatus) {
+        sessionStatus.setComplete();
+        return ControllerUtils.redirectToDashboard();
     }
 }
