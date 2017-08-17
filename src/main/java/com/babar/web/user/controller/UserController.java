@@ -108,7 +108,7 @@ public class UserController {
 
         return ControllerUtils.redirectWithMessage(redirectAttributes,
                 msa.getMessage("msg.pwd.update.successful", new String[]{"User"}),
-                helper.getShowPageUrl(user.getId(), null));
+                helper.getShowPageUrl(user.getId(), command.getBackLink()));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_save")
@@ -126,7 +126,7 @@ public class UserController {
 
         return ControllerUtils.redirectToCommon(redirectAttributes,
                                     msa.getMessage("msg.save.successful", new String[]{"User"}),
-                                    helper.getShowPageUrl(user.getId(), null));
+                                    helper.getShowPageUrl(user.getId(), command.getBackLink()));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_update")
@@ -144,7 +144,7 @@ public class UserController {
 
         return ControllerUtils.redirectWithMessage(redirectAttributes,
                                 msa.getMessage("msg.update.successful", new String[]{"User"}),
-                                helper.getShowPageUrl(user.getId(), null));
+                                helper.getShowPageUrl(user.getId(), command.getBackLink()));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_delete")
@@ -157,7 +157,7 @@ public class UserController {
 
         return ControllerUtils.redirectWithMessage(redirectAttributes,
                 msa.getMessage("msg.delete.successful", new String[]{"User"}),
-                helper.getShowPageUrl(user.getId(), null));
+                helper.getShowPageUrl(user.getId(), command.getBackLink()));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_back")
