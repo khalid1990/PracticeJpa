@@ -9,6 +9,7 @@ import com.babar.db.entity.QuestionOption;
 import com.babar.db.entity.QuestionPaper;
 import com.babar.framework.workflow.FormType;
 import com.babar.framework.workflow.WorkflowManager;
+import com.babar.utils.StringUtils;
 import com.babar.utils.Util;
 import com.babar.web.common.*;
 import com.babar.web.question.controller.QuestionController;
@@ -51,10 +52,13 @@ public class QuestionHelper {
 
     public String getShowPageUrl(int questionId, String backLink) {
         UrlGenerator ug = new UrlGenerator(Url.QUESTION_SHOW);
+        ug.addParam("id", String.valueOf(questionId));
 
-        return ug.addParam("id", String.valueOf(questionId))
-                .addParam("backLink", backLink)
-                .getRawUrl();
+        if (StringUtils.isNotEmpty(backLink)) {
+            ug.addParam("backLink", backLink);
+        }
+
+        return ug.getRawUrl();
     }
 
     private QuestionCommand createQuestionCommand(Question question, ViewMode viewMode) {

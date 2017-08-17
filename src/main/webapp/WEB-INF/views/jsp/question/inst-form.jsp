@@ -16,6 +16,12 @@
 
     <c:set var="readOnly" value="${command.actionView.readOnly}"/>
 
+    <c:if test="${!empty FLASH_MESSAGE}">
+        <div class="alert alert-success alert-dismissable">
+            <c:out value="${FLASH_MESSAGE}"/>
+        </div>
+    </c:if>
+
     <b:formHeader titleKey="label.institution"
                   status="${command.institution.status.value}"/>
 
@@ -35,7 +41,8 @@
 
         <b:buttonSection leftSectionSize="3">
             <jsp:attribute name="left">
-                <b:button name="_action_back" value="label.back"/>
+                <b:button name="${not readOnly and not command.institution.new ? '_action_back_show' : '_action_back'}"
+                          value="label.back"/>
                 <b:button name="_action_cancel" value="label.cancel"/>
             </jsp:attribute>
 
@@ -45,6 +52,7 @@
                         <c:if test="${command.actionView.canUpdate}">
                             <c:url var="editUrl" value="/qbank/institution/edit">
                                 <c:param name="id" value="${command.institution.id}"/>
+                                <c:param name="backLink" value="${command.backLink}"/>
                             </c:url>
 
                             <b:button name="editUrl"

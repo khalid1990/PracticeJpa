@@ -1,9 +1,9 @@
 package com.babar.web.user.helper;
 
 import com.babar.db.entity.User;
-import com.babar.web.common.Action;
-import com.babar.web.common.ActionView;
-import com.babar.web.common.ViewMode;
+import com.babar.utils.StringUtils;
+import com.babar.utils.Util;
+import com.babar.web.common.*;
 import com.babar.web.user.controller.UserController;
 import com.babar.web.user.model.UserCommand;
 import com.babar.web.user.service.UserService;
@@ -49,12 +49,12 @@ public class UserHelper {
                                                String sortProperty,
                                                ModelMap modelMap) {
 
-
         modelMap.put("currentIndex", currentIndex);
         modelMap.put("listUrl", "/qbank/user/list");
         modelMap.put("recordLoaderUrl", "/qbank/user/show");
         modelMap.put("sortOrder", sortOrder);
         modelMap.put("sortProperty", sortProperty);
+        modelMap.put("currentUrl", Util.getCurrentUrl());
 
         int startIndex = currentIndex * RECORDS_PER_PAGE;
         List<User> records = userService.getSortedUsers(sortProperty, sortOrder, startIndex, RECORDS_PER_PAGE);
@@ -80,10 +80,22 @@ public class UserHelper {
         modelMap.put("propertyColumnNameMap", propertyColumnNamMap);
     }
 
+    public String getShowPageUrl(int userId, String backLink) {
+        UrlGenerator ug = new UrlGenerator(Url.USER_SHOW);
+        ug.addParam("id", String.valueOf(userId));
+
+        if (StringUtils.isNotEmpty(backLink)) {
+            ug.addParam("backLink", backLink);
+        }
+
+        return ug.getRawUrl();
+    }
+
     private UserCommand createUserCommand(User user, ViewMode viewMode, List<Action> actions) {
         UserCommand command = new UserCommand();
         command.setUser(user);
         command.setAv(new ActionView(viewMode, actions));
+        command.setBackLink(Util.getBackLink());
 
         return command;
     }

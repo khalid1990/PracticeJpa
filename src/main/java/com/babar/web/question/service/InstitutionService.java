@@ -4,12 +4,14 @@ import com.babar.db.common.enums.FormStatus;
 import com.babar.db.entity.Institution;
 import com.babar.framework.workflow.FormType;
 import com.babar.framework.workflow.WorkflowManager;
+import com.babar.utils.StringUtils;
 import com.babar.web.common.Action;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 /**
@@ -28,6 +30,23 @@ public class InstitutionService {
 
     public List<Institution> findAll() {
         return em.createNamedQuery("findAllInstitutions", Institution.class).getResultList();
+    }
+
+    public List<Institution> getSortedInstitutions(String sortProperty,
+                                                     String sortOrder,
+                                                     int startIndex,
+                                                     int recordsPerPage) {
+        String sql = "Select inst from Institution inst ";
+
+        if (!StringUtils.isAnyEmpty(sortProperty, sortOrder)) {
+            sql += " order by " + sortProperty + " " + sortOrder;
+        }
+
+        Query query = em.createQuery(sql, Institution.class);
+
+        return query.setFirstResult(startIndex)
+                .setMaxResults(recordsPerPage)
+                .getResultList();
     }
 
     @Transactional
