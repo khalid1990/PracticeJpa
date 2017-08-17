@@ -131,7 +131,7 @@ public class InstitutionController {
 
         return ControllerUtils.redirectToCommon(redirectAttributes,
                 msa.getMessage("msg.save.successful", new String[]{"Institution"}),
-                helper.getShowUrl(institution.getId(), null));
+                helper.getShowUrl(institution.getId(), command.getBackLink()));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_update")
@@ -148,7 +148,7 @@ public class InstitutionController {
 
         return ControllerUtils.redirectWithMessage(redirectAttributes,
                 msa.getMessage("msg.update.successful", new String[]{"Institution"}),
-                helper.getShowUrl(institution.getId(), null));
+                helper.getShowUrl(institution.getId(), command.getBackLink()));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_submit")
@@ -165,7 +165,7 @@ public class InstitutionController {
 
         return ControllerUtils.redirectWithMessage(redirectAttributes,
                 msa.getMessage("msg.submit.successful", new String[]{"Institution"}),
-                helper.getShowUrl(institution.getId(), null));
+                helper.getShowUrl(institution.getId(), command.getBackLink()));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_approve")
@@ -183,7 +183,7 @@ public class InstitutionController {
 
         return ControllerUtils.redirectWithMessage(redirectAttributes,
                 msa.getMessage("msg.approve.successful", new String[]{"Institution"}),
-                helper.getShowUrl(institution.getId(), null));
+                helper.getShowUrl(institution.getId(), command.getBackLink()));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_delete")
@@ -196,7 +196,7 @@ public class InstitutionController {
 
         return ControllerUtils.redirectWithMessage(redirectAttributes,
                 msa.getMessage("msg.delete.successful", new String[]{"Institution"}),
-                helper.getShowUrl(institution.getId(), null));
+                helper.getShowUrl(institution.getId(), command.getBackLink()));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_return")
@@ -209,7 +209,7 @@ public class InstitutionController {
 
         return ControllerUtils.redirectWithMessage(redirectAttributes,
                 msa.getMessage("msg.return.successful", new String[]{"Institution"}),
-                helper.getShowUrl(institution.getId(), null));
+                helper.getShowUrl(institution.getId(), command.getBackLink()));
     }
 
     @RequestMapping(value = "index", method = RequestMethod.POST, params = "_action_back")
