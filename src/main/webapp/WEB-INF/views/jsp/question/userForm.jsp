@@ -95,21 +95,36 @@
             </jsp:attribute>
         </b:section>
 
-        <c:if test="${not user.new and not readOnly}">
+        <c:if test="${not changePassword}">
+            <c:url var="changePassword" value="/qbank/user/edit">
+                <c:param name="id" value="${user.id}"/>
+                <c:if test="${not empty command.backLink}">
+                    <c:param name="backLink" value="${command.backLink}"/>
+                </c:if>
+                <c:param name="changePassword" value="true"/>
+            </c:url>
+
+            <a href="${changePassword}"><fmt:message key="label.change.password"/></a>
+        </c:if>
+
+        <c:if test="${changePassword}">
             <b:section titleKey="label.change.password">
                 <jsp:attribute name="body">
                     <div class="row">
                         <b:passwordField bindPath="oldPassword"
+                                         required="true"
                                          messageKey="label.enter.old.password"/>
                     </div>
 
                     <div class="row">
-                        <b:passwordField bindPath="user.password"
+                        <b:passwordField bindPath="newPassword"
+                                         required="true"
                                          messageKey="label.enter.new.password"/>
                     </div>
 
                     <div class="row">
                         <b:passwordField bindPath="confirmPassword"
+                                         required="true"
                                          messageKey="label.confirm.password"/>
                     </div>
                     

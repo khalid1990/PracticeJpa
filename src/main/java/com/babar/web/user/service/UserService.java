@@ -86,14 +86,4 @@ public class UserService {
 
         return user;
     }
-
-    private Designation resolveToDesignation(String value) {
-        for (Designation d : Designation.values()) {
-            if (d.getName().toLowerCase().contains((value.toLowerCase()))) {
-                return d;
-            }
-        }
-
-        return null;
-    }
 }

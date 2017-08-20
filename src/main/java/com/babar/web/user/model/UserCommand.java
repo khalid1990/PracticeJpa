@@ -23,6 +23,8 @@ public class UserCommand implements Serializable{
 
     private String oldPassword;
 
+    private String newPassword;
+
     private String confirmPassword;
 
     public UserCommand() {
@@ -64,6 +66,14 @@ public class UserCommand implements Serializable{
 
     public void setOldPassword(String oldPassword) {
         this.oldPassword = oldPassword;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
     public String getConfirmPassword() {

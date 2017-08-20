@@ -73,12 +73,15 @@ public class UserController {
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
-    public String edit(@RequestParam("id") int id, ModelMap modelMap) {
+    public String edit(@RequestParam("id") int id,
+                       @RequestParam(value = "changePassword", required = false) boolean changePassword,
+                       ModelMap modelMap) {
 
         User user = userService.find(id);
 
         helper.checkAccess(user, UPDATE);
         helper.populateModel(user, modelMap, ViewMode.EDITABLE, UPDATE);
+        modelMap.put("changePassword", changePassword);
 
         return USER_FORM;
     }
