@@ -15,6 +15,8 @@ public class CommonController {
 
     private static final String COMMON_DONE_PAGE = "common-done-page";
 
+    private static final String LOGIN_FORM = "login-form";
+
     @RequestMapping(value = "/done", method = RequestMethod.GET)
     public String done() {
         return COMMON_DONE_PAGE;
@@ -24,5 +26,10 @@ public class CommonController {
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
     public String home() {
         return "Dashboard";
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login() {
+        return LOGIN_FORM;
     }
 }

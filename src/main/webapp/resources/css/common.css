@@ -28,6 +28,12 @@ input[type=checkbox] {
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
+.header-right {
+    float: right;
+    color: #ffffff;
+    font-weight: bold;
+}
+
 .footer {
     background-color: #777777;
     color: #1b6d85;
