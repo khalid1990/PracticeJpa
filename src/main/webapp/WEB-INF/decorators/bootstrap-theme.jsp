@@ -30,7 +30,19 @@
 </head>
 <body>
     <div class="header">
-        <span class="header-title"> <fmt:message key="title.project"/> </span>
+        <div class="header-title"> <fmt:message key="title.project"/> </div>
+
+        <div class="header-right">
+            <%--To make the logout mechanism work correctly it was required that the request method was *post*
+                and the request was submitted to "/logout" at context root; as I haven't specified any "logout-url"
+                in my spring-security.xml.
+            --%>
+            <c:url var="logoutUrl" value="/logout"/>
+            <form action="${logoutUrl}" method="post">
+                <b:button name="logout" value="label.logout"/>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            </form>
+        </div>
     </div>
 
     <div class="container">

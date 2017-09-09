@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xsi:schemaLocation="
+                http://www.springframework.org/schema/security
+                http://www.springframework.org/schema/security/spring-security-4.2.xsd
+                http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+
+    <http>
+        <!--
+            need to know the difference between permitAll and isAnonymous(); one I can add from experience
+            if you secure your login/any url using isAnonymous() then you can't access that url when you are
+            logged in, but if you use "permitAll" to secure, then you can access the url both when you are
+            logged in or not logged in
+        -->
+        <intercept-url pattern="/resources/**" access="permitAll" />
+        <intercept-url pattern="/qbank/common/login" access="permitAll" />
+
+        <intercept-url pattern="/**" access="isAuthenticated()"/>
+
+        <!--if your 'login-page' value is anything other than "/login" than you have to explicitly specify the
+            'login-processing-url' to be the same. otherwise spring security will fail to authenticate.
+        -->
+
+        <form-login login-page="/qbank/common/login"
+                    login-processing-url="/qbank/common/login"
+                    default-target-url="/qbank/common/dashboard"
+                    username-parameter="email"/>
+        <!--Here the default value is *username* , as in my login-form.jsp file I used *email* instead of *username* as
+            input filed name, I had to explicitly declare that here. As the password field is same I do not need to
+            explicitly declare that here. It will assume the default value.
+        -->
+
+        <logout/>
+
+        <!--One more thing, at first I didn't use <csrf/> tag in my spring-security.xml, but the logout
+            mechanism was failing by telling that *some problem* was regarding the "csrf", as I added
+            <csrf/> to my xml and added *<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />*
+            to my login and logout form the logout mechanism did function properly.
+
+            N.B.: Later I confirmed that from spring-security-4, csrf is enabled by default and I didn't even need to
+            add the <csrf/> to my xml. I can ofcourse disable it by specifying <csrf disabled="true"/>
+        -->
+
+
+    </http>
+
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="babar" password="babar" authorities="ROLE_USER" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+</beans:beans>
