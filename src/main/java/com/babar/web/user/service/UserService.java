@@ -45,6 +45,12 @@ public class UserService {
                 .getResultList();
     }
 
+    public User getUserByEmail(String email) {
+        return em.createQuery("select user from User user where user.email = :email", User.class)
+                .setParameter("email", email)
+                .getSingleResult();
+    }
+
     @Transactional
     public User save(User user) {
         return doSave(user);

@@ -47,11 +47,11 @@
 
     </http>
 
+    <beans:bean id="userDetailsService" class="com.babar.web.user.service.QBankUserDetailsService"/>
+
     <authentication-manager>
-        <authentication-provider>
-            <user-service>
-                <user name="babar" password="babar" authorities="ROLE_USER" />
-            </user-service>
+        <authentication-provider user-service-ref="userDetailsService">
+
         </authentication-provider>
     </authentication-manager>
 </beans:beans>
