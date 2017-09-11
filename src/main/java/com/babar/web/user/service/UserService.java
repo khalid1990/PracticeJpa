@@ -2,6 +2,8 @@ package com.babar.web.user.service;
 
 import com.babar.db.common.enums.Designation;
 import com.babar.db.entity.User;
+import com.babar.security.Role;
+import com.babar.security.UserRole;
 import com.babar.utils.StringUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,6 +46,45 @@ public class UserService {
         return query.setFirstResult(startIndex)
                 .setMaxResults(recordsPerPage)
                 .getResultList();
+    }
+
+    public User getUserByEmail(String email) {
+        return em.createQuery("select user from User user where user.email = :email", User.class)
+                .setParameter("email", email)
+                .getSingleResult();
+    }
+
+    @Transactional
+    public void addRole(User user, Role role) {
+        em.persist(new UserRole(user, role));
+        em.flush();
+    }
+
+    @Transactional
+    public void deleteRole(User user, Role role) {
+        UserRole userRole = em.createQuery("select ur from UserRole ur where ur.user=:user and ur.role=:role", UserRole.class)
+                                .setParameter("user", user)
+                                .setParameter("role", role)
+                                .getSingleResult();
+
+        if (userRole != null) {
+            em.remove(userRole);
+        }
+        em.flush();
+    }
+
+    public List<Role> getRoles(User user) {
+        List<UserRole> userRoleList = em.createQuery("select ur from UserRole ur where ur.user = :user", UserRole.class)
+                .setParameter("user", user)
+                .getResultList();
+
+        List<Role> roles = new ArrayList<>();
+
+        for (UserRole userRole : userRoleList) {
+            roles.add(userRole.getRole());
+        }
+
+        return roles;
     }
 
     @Transactional

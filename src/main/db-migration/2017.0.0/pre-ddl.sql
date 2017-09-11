@@ -184,3 +184,16 @@ CREATE TABLE question_option (
 
   CONSTRAINT fk_question_id FOREIGN KEY (question_id) REFERENCES question(id)
 );
+
+--Creating user_role table
+
+CREATE TABLE user_role (
+  id          INT (10) NOT NULL AUTO_INCREMENT,
+  user_id     INT (10) NOT NULL,
+  role        VARCHAR (50) NOT NULL,
+
+  CONSTRAINT pk_user_role PRIMARY KEY (id),
+
+  CONSTRAINT fk_user_role_user_id FOREIGN KEY (user_id) REFERENCES user (id),
+  CONSTRAINT uk_user_role UNIQUE (user_id, role)
+);
