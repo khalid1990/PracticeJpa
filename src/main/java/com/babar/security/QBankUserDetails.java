@@ -1,20 +1,28 @@
 package com.babar.security;
 
 import com.babar.db.entity.User;
+import com.babar.web.user.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author babar
  * @since 9/9/17.
  */
+@Component
 public class QBankUserDetails implements UserDetails{
 
     private User user;
+
+    private List<GrantedAuthority> authorities;
 
     public QBankUserDetails() {
     }
@@ -25,7 +33,7 @@ public class QBankUserDetails implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("USER"));
+        return authorities;
     }
 
     @Override
@@ -64,5 +72,9 @@ public class QBankUserDetails implements UserDetails{
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setAuthorities(List<GrantedAuthority> authorities) {
+        this.authorities = authorities;
     }
 }

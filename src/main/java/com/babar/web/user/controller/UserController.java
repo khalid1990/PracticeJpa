@@ -1,7 +1,7 @@
 package com.babar.web.user.controller;
 
 import com.babar.db.entity.User;
-import com.babar.utils.StringUtils;
+import com.babar.security.Role;
 import com.babar.web.common.*;
 import com.babar.web.user.helper.UserHelper;
 import com.babar.web.user.model.UserCommand;
@@ -19,6 +19,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.babar.web.common.Action.*;
 
 /**
@@ -35,6 +38,8 @@ public class UserController {
     private static final String USER_FORM = "userForm";
 
     private static final String USER_LIST_VIEW = "userListView";
+
+    private static final String USER_ROLES = "roles";
 
     @Autowired
     private UserHelper helper;
@@ -84,6 +89,40 @@ public class UserController {
         modelMap.put("changePassword", changePassword);
 
         return USER_FORM;
+    }
+
+    @RequestMapping(value = "/roles", method = RequestMethod.GET)
+    public String roles(@RequestParam(name = "userId") int userId,
+                        @RequestParam(name = "role", required = false) Role role,
+                        @RequestParam(name = "add", required = false) boolean add,
+                        @RequestParam(name = "delete", required = false) boolean delete,
+                        ModelMap modelMap) {
+
+        User user = userService.find(userId);
+
+        if (role != null) {
+            if (add) {
+                userService.addRole(user, role);
+            }
+
+            if (delete) {
+                userService.deleteRole(user, role);
+            }
+        }
+
+        List<Role> roles = userService.getRoles(user);
+        List<Role> rolesNotAdded = new ArrayList<>();
+
+        for (Role r : Role.values()) {
+            if (!roles.contains(r)) {
+                rolesNotAdded.add(r);
+            }
+        }
+        modelMap.put("addedRoles", roles);
+        modelMap.put("rolesNotAdded", rolesNotAdded);
+        modelMap.put("userId", user.getId());
+
+        return USER_ROLES;
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
